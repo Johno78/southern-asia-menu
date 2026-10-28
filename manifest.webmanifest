@@ -1,12 +1,12 @@
 {
-  "name": "Southern Asia Menu",
-  "short_name": "Southern Asia",
-  "description": "Menu for Southern Asia Chinese takeaway, Port Erin",
+  "name": "Takeaways",
+  "short_name": "Takeaways",
+  "description": "Isle of Man takeaway menus with a running order total",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#A91D1A",
-  "theme_color": "#A91D1A",
+  "background_color": "#262029",
+  "theme_color": "#262029",
   "icons": [
     {
       "src": "icons/icon-192.png",

@@ -3,522 +3,130 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Southern Asia Menu</title>
-<meta name="theme-color" content="#A91D1A">
-<meta name="description" content="Menu for Southern Asia Chinese takeaway, Port Erin, Isle of Man.">
+<title>Takeaways</title>
+<meta name="theme-color" content="#262029">
+<meta name="description" content="Takeaway menus for the Isle of Man, with a running order total.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Southern Asia">
+<meta name="apple-mobile-web-app-title" content="Takeaways">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=IBM+Plex+Mono:wght@500;600&family=Source+Serif+4:wght@400;600&display=swap">
-<style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-</head>
-<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Figtree:wght@400;600;800&display=swap">
 <style>
-/* Layout: lacquer-red masthead, sticky search and category strip, then a numbered list read like a phone order (number, dish, price). */
+/* Layout: ink-coloured header, then one tall card per takeaway in its own brand colour, with live open/closed status. */
 :root{
-  --bg:#F5F3F1; --surface:#FFFFFF; --fg:#1E1A19; --muted:#6B6360; --line:#E0DAD6;
-  --accent:#B8201C; --accent-fg:#FFFFFF; --hero:#A91D1A; --hero-fg:#FFF6F2; --hero-soft:rgba(255,246,242,.75);
-  --ok:#1F7A45; --shadow:rgba(30,26,25,.18);
-  --sans:'Archivo','Helvetica Neue',Arial,sans-serif;
-  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
-  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+  --bg:#F4F1F2; --surface:#FFFFFF; --fg:#211C24; --muted:#6A6270; --line:#E1DADD;
+  --head:#262029; --head-fg:#F8F2F4; --head-soft:rgba(248,242,244,.7);
+  --ok:#1F7A45; --shadow:rgba(33,28,36,.14);
+  --display:'Fredoka','Trebuchet MS',Arial,sans-serif;
+  --sans:'Figtree','Helvetica Neue',Arial,sans-serif;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#151110; --surface:#211A19; --fg:#F1E8E4; --muted:#A39893; --line:#352D2B;
-    --accent:#EA5B52; --accent-fg:#1A0C0B; --hero:#7E1714; --hero-fg:#FFF1EC; --hero-soft:rgba(255,241,236,.72);
+    --bg:#121014; --surface:#1E1A22; --fg:#F2ECF3; --muted:#A99FB0; --line:#332C38;
+    --head:#1A161D; --head-fg:#F8F2F4; --head-soft:rgba(248,242,244,.7);
     --ok:#4CC27F; --shadow:rgba(0,0,0,.5); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#151110; --surface:#211A19; --fg:#F1E8E4; --muted:#A39893; --line:#352D2B;
-  --accent:#EA5B52; --accent-fg:#1A0C0B; --hero:#7E1714; --hero-fg:#FFF1EC; --hero-soft:rgba(255,241,236,.72);
+  --bg:#121014; --surface:#1E1A22; --fg:#F2ECF3; --muted:#A99FB0; --line:#332C38;
+  --head:#1A161D; --head-fg:#F8F2F4; --head-soft:rgba(248,242,244,.7);
   --ok:#4CC27F; --shadow:rgba(0,0,0,.5); color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font:400 1rem/1.5 var(--serif);-webkit-text-size-adjust:100%}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--hero)}
-.wrap{max-width:46rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-button{font:inherit;color:inherit;cursor:pointer}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-
-/* masthead */
-.hero{background:var(--hero);color:var(--hero-fg);position:relative;overflow:hidden}
-.hero .wrap{padding-block:1.5rem 1.25rem;position:relative}
-.cn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:.2rem;font:800 5.5rem/1 var(--sans);letter-spacing:-.05em;color:var(--hero-fg);opacity:.14;pointer-events:none;user-select:none}
-.kicker{margin:0;font:600 .75rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--hero-soft)}
-h1{margin:.4rem 0 .2rem;font:800 clamp(2.4rem,11vw,3.6rem)/.95 var(--sans);letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance}
-.addr{margin:0;color:var(--hero-soft);font-size:.95rem}
-.meta{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:1rem}
-.status{display:inline-flex;align-items:center;gap:.5rem;font:600 .85rem/1 var(--sans);padding:.5rem .75rem;border-radius:999px;background:rgba(255,255,255,.14)}
-.dot{width:.55rem;height:.55rem;border-radius:50%;background:#9AA0A6}
-.status.open .dot{background:#5BE08F}
-.phone{font:600 1.15rem/1 var(--mono);color:var(--hero-fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
-.hours{margin-top:.9rem;font:400 .9rem/1.5 var(--sans);color:var(--hero-soft)}
-.hours summary{cursor:pointer;font-weight:600;color:var(--hero-fg)}
-.hours dl{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1rem;margin:.5rem 0 0}
-.hours dt{font-weight:600}.hours dd{margin:0}
-
-/* sticky tools */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
-.bar .wrap{padding-block:.6rem .5rem;display:grid;gap:.5rem}
-.search{display:flex;gap:.5rem}
-.search input{flex:1;min-width:0;font:400 1rem var(--sans);padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:.6rem;background:var(--surface);color:var(--fg)}
-.search input::placeholder{color:var(--muted)}
-.veg{font:600 .85rem/1 var(--sans);padding:0 .85rem;border:1.5px solid var(--line);border-radius:.6rem;background:var(--surface)}
-.veg[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
-.chips{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;font:600 .82rem/1 var(--sans);padding:.55rem .8rem;border-radius:999px;border:1.5px solid var(--line);background:transparent;white-space:nowrap}
-.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
-
-/* menu */
-main.wrap{padding-block:.5rem 7rem}
-.sec{padding-top:1.4rem}
-.sec h2{margin:0;font:800 1.15rem/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-bottom:.4rem;border-bottom:2px solid var(--accent);text-wrap:balance}
-.sec .cnote{margin:.45rem 0 0;color:var(--muted);font-size:.9rem;font-style:italic}
-.rows{list-style:none;margin:0;padding:0}
-.row{display:grid;grid-template-columns:3rem minmax(0,1fr) auto;gap:.2rem .6rem;padding:.8rem 0;border-bottom:1px solid var(--line);align-items:start}
-.num{font:600 .9rem/1.6 var(--mono);color:var(--accent)}
-.name{font:600 1.02rem/1.35 var(--serif);overflow-wrap:anywhere}
-.note{display:block;margin-top:.1rem;color:var(--muted);font-size:.86rem;line-height:1.4}
-.vtag{display:inline-block;margin-left:.4rem;font:800 .65rem/1 var(--sans);padding:.2rem .35rem;border-radius:.3rem;background:var(--ok);color:#fff;vertical-align:.12em;letter-spacing:.04em}
-.side{display:flex;align-items:center;gap:.6rem}
-.price{font:500 .95rem/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
-.add,.step button{min-width:2.5rem;height:2.5rem;border-radius:50%;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font:600 1.3rem/1 var(--sans);display:inline-flex;align-items:center;justify-content:center;padding:0}
-.step{display:inline-flex;align-items:center;gap:.25rem}
-.step button{width:2.2rem;min-width:2.2rem;height:2.2rem}
-.step .q{min-width:1.4rem;text-align:center;font:600 .95rem var(--mono)}
-.step .inc{background:var(--accent);color:var(--accent-fg)}
-.sizes{display:grid;gap:.4rem;margin-top:.5rem}
-.size{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem 0 .4rem .7rem;border-left:3px solid var(--line)}
-.size .sl{font:600 .9rem var(--sans)}
-.empty{padding:2.5rem 0;text-align:center;color:var(--muted)}
-.foot{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font:400 .85rem/1.55 var(--sans)}
-.foot p{margin:0 0 .6rem}
-
-/* order bar and sheet */
-.obar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--accent);color:var(--accent-fg);padding:.7rem max(16px,env(safe-area-inset-right,0px)) calc(.7rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -6px 20px var(--shadow)}
-.obar button{width:100%;max-width:46rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem;background:none;border:0;color:inherit;font:800 1rem/1.2 var(--sans);padding:.35rem 0}
-.obar .tot{font-family:var(--mono);font-weight:600}
-.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
-.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
-.panel{position:relative;width:100%;max-width:46rem;max-height:88%;overflow-y:auto;background:var(--surface);border-radius:1rem 1rem 0 0;padding:1rem max(16px,env(safe-area-inset-right,0px)) calc(1rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.panel h3{margin:0;font:800 1.2rem var(--sans);text-transform:uppercase;letter-spacing:.04em}
-.ph{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.4rem}
-.ph button{border:1.5px solid var(--line);background:transparent;border-radius:.5rem;padding:.4rem .7rem;font:600 .85rem var(--sans)}
-.line{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;gap:.5rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
-.line .ln{font:500 .92rem/1.35 var(--serif)}
-.line .lp{font:500 .9rem var(--mono);text-align:right;grid-column:2/4}
-.totalrow{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem 0 .4rem;font:800 1.1rem var(--sans)}
-.totalrow span:last-child{font-family:var(--mono);font-weight:600}
-.readout{margin:.2rem 0 .9rem;padding:.7rem .8rem;border-radius:.6rem;background:var(--bg);font:400 .9rem/1.5 var(--sans)}
-.readout b{font:600 1rem var(--mono);color:var(--accent);word-spacing:.3rem}
+html{margin:0}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1rem/1.5 var(--sans);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--head)}
+.wrap{max-width:40rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:3px solid #F06AAA;outline-offset:2px}
+header{background:var(--head);color:var(--head-fg)}
+header .wrap{padding-block:1.6rem 1.4rem;position:relative}
+.cn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:.5rem;font:600 4.4rem/1 var(--display);opacity:.12;pointer-events:none;user-select:none}
+.kicker{margin:0;font:800 .75rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--head-soft)}
+h1{margin:.35rem 0 .3rem;font:600 clamp(2.4rem,11vw,3.4rem)/1 var(--display)}
+.lede{margin:0;color:var(--head-soft);font-size:.95rem;max-width:30rem}
+main.wrap{padding-block:1.2rem 2rem;display:grid;gap:1rem}
+.card{background:var(--surface);border-radius:.9rem;overflow:hidden;box-shadow:0 2px 10px var(--shadow)}
+.top{background:var(--brand);color:#fff;padding:1rem 1rem .9rem;position:relative;overflow:hidden}
+.top .mark{position:absolute;right:.8rem;top:.2rem;font:600 3.6rem/1 var(--display);opacity:.18;pointer-events:none;user-select:none}
+.top h2{margin:0;font:600 1.7rem/1.1 var(--display)}
+.top p{margin:.2rem 0 0;font-size:.9rem;opacity:.85}
+.body{padding:.9rem 1rem 1rem;display:grid;gap:.8rem}
+.status{display:inline-flex;align-items:center;gap:.5rem;font:600 .88rem/1.2 var(--sans);color:var(--muted)}
+.dot{width:.6rem;height:.6rem;border-radius:50%;background:#A59DAB;flex:none}
+.status.open{color:var(--ok)}
+.status.open .dot{background:var(--ok)}
+.facts{margin:0;color:var(--muted);font-size:.88rem;line-height:1.45}
 .actions{display:flex;gap:.6rem;flex-wrap:wrap}
-.btn{flex:1 1 9rem;padding:.8rem 1rem;border-radius:.6rem;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-fg);font:800 .95rem var(--sans);text-align:center;text-decoration:none}
-.btn.alt{background:transparent;color:var(--accent)}
-.fallback{width:100%;margin-top:.7rem;min-height:7rem;font:400 .85rem/1.4 var(--mono);padding:.6rem;border:1.5px solid var(--line);border-radius:.5rem;background:var(--bg);color:var(--fg)}
-.small{margin:.7rem 0 0;color:var(--muted);font:400 .8rem/1.45 var(--sans)}
-@media (prefers-reduced-motion:no-preference){.chip,.add,.veg{transition:background .15s,color .15s}}
-@media (max-width:380px){.cn{font-size:4.2rem}.row{grid-template-columns:2.7rem minmax(0,1fr) auto}}
+.btn{flex:1 1 9rem;padding:.8rem 1rem;border-radius:.6rem;border:1.5px solid var(--brand);background:var(--brand);color:#fff;font:800 .95rem var(--sans);text-align:center;text-decoration:none}
+.btn.alt{background:transparent;color:var(--fg);border-color:var(--line)}
+.foot{margin:.4rem 0 0;color:var(--muted);font-size:.82rem;line-height:1.5}
 </style>
-
-
-<header class="hero">
+</head>
+<body>
+<header>
   <div class="wrap">
-    <span class="cn" aria-hidden="true">南亚</span>
-    <p class="kicker">Chinese takeaway · Port Erin</p>
-    <h1>Southern Asia</h1>
-    <p class="addr">1 Strand Road, Glen View, IM9 6HB</p>
-    <div class="meta">
-      <span class="status" id="status"><span class="dot"></span><span id="statusText">Checking hours</span></span>
-      <a class="phone" id="phoneLink" href="tel:01624836516">01624 836516</a>
-    </div>
-    <details class="hours">
-      <summary>Opening hours</summary>
-      <dl>
-        <dt>Sun, Mon</dt><dd>5pm to 11pm</dd>
-        <dt>Tuesday</dt><dd>Closed</dd>
-        <dt>Wed, Thu</dt><dd>5pm to 11pm</dd>
-        <dt>Fri, Sat</dt><dd>5pm to midnight</dd>
-      </dl>
-    </details>
+    <span class="cn" aria-hidden="true">外卖</span>
+    <p class="kicker">Isle of Man</p>
+    <h1>Takeaways</h1>
+    <p class="lede">Menus to search, with a running order total and the dish numbers to read out when you ring.</p>
   </div>
 </header>
-
-<div class="bar" id="bar">
-  <div class="wrap">
-    <div class="search">
-      <input id="q" type="search" inputmode="search" placeholder="Search a dish or number" aria-label="Search the menu" autocomplete="off">
-      <button class="veg" id="veg" type="button" aria-pressed="false">Veg</button>
-    </div>
-    <nav class="chips" id="chips" aria-label="Menu sections"></nav>
-  </div>
-</div>
-
-<main class="wrap" id="menu" aria-live="polite"></main>
-
-<div class="obar" id="obar" hidden>
-  <button type="button" id="openSheet"><span id="obarCount">0 items</span><span class="tot" id="obarTotal">£0.00</span><span>View order</span></button>
-</div>
-
-<div class="sheet" id="sheet" hidden>
-  <div class="sheet-bg" data-act="close"></div>
-  <section class="panel" role="dialog" aria-modal="true" aria-label="Your order">
-    <div class="ph"><h3>Your order</h3><button type="button" id="closeSheet" data-act="close">Close</button></div>
-    <div id="lines"></div>
-    <div class="totalrow"><span>Total</span><span id="sheetTotal">£0.00</span></div>
-    <div class="readout" id="readout"></div>
-    <div class="actions">
-      <button class="btn" type="button" id="copy">Copy order</button>
-      <a class="btn alt" href="tel:01624836516">Call 01624 836516</a>
-      <button class="btn alt" type="button" id="clear">Clear order</button>
-    </div>
-    <textarea class="fallback" id="fallback" readonly hidden aria-label="Order text to copy"></textarea>
-    <p class="small">The total is a guide from the menu prices. The shop confirms the final amount when you ring.</p>
-  </section>
-</div>
-
+<main class="wrap" id="list"></main>
+<div class="wrap"><p class="foot">Menus are typed from printed copies and prices can change, so check when you order. Opening hours come from each shop's own menu or listing.</p></div>
 <script>
 (function(){
-var PHONE='01624 836516';
-var MENU=[
-{id:'soups',name:'Soups',items:[
-['1','Southern Asia Special Soup',4.80],
-['2','Chicken & Sweetcorn Soup',4.50],
-['3','Won Ton Soup',4.80],
-['4','Chicken, Mushroom & Noodle Soup',4.50],
-['5','Hot & Sour Soup',4.80],
-['6','Vegetarian Hot & Sour Soup',4.80,'','v']]},
-{id:'appetisers',name:'Appetisers',items:[
-['7','Crispy Aromatic Duck',[['Quarter',12.50],['Half',20.50],['Whole',38.00]],'Served with hoi sin sauce, spring onions, cucumber & pancakes'],
-['8','Mixed Box',18.00,'Enough for two people: 2 spring rolls, 2 prawn toasts, 2 chicken skewers, salt & pepper spare ribs, 4 won ton & seaweed'],
-['9','Crispy Mongolian Lamb',13.00],
-['10','Crispy Spring Roll (4)',5.50],
-['11','Vegetarian Spring Roll (4)',5.50,'','v'],
-['12','Sesame Prawn Toast (6)',7.20],
-['13','Deep Fried Crispy Won Ton',6.00],
-['14','Deep Fried Crispy Seaweed',5.80,'Ground fish or cashew nut topping'],
-['15','Chicken Skewers (4)',6.90],
-['16','Chicken Wings',7.50,'Choice of sweet & chilli or honey sauce, or salt & chilli pepper'],
-['17','Chicken Balls (8)',8.50,'With a choice of sauce'],
-['18','Spare Ribs',7.80,'Cooked with Peking, orange or plum sauce, or salt & chilli pepper']]},
-{id:'pork',name:'Roast Pork',items:[
-['19','Cha Siu',8.50,'Choice of special soy sauce or honey sauce'],
-['20','Sweet & Sour Pork',8.00],
-['21','Roast Pork with Hot Szechuan Sauce',8.00],
-['22','Roast Pork with English Mushrooms',8.00],
-['23','Roast Pork with Green Pepper & Black Bean Sauce',8.00],
-['24','Roast Pork with Mixed Vegetables (Chop Suey)',8.00],
-['25','Roast Pork with Cashew Nut & Peking Sauce',8.00],
-['26','Roast Pork with Satay Sauce',8.00]]},
-{id:'chicken',name:'Chicken',items:[
-['27','Crispy Shredded Chicken',8.50,'Cooked with sweet & chilli or garlic butter'],
-['28','Sweet & Sour Chicken',8.20],
-['29','Salt & Chilli Pepper Chicken (Dry)',8.00],
-['30','Crispy Chicken & Seaweed (Dry)',8.00],
-['31','Lemon Chicken',8.00],
-['32','Kung Po Chicken',8.00],
-['33','Chicken with English Mushrooms',8.00],
-['34','Chicken with Spring Onion & Ginger',8.20],
-['35','Chicken with Green Pepper & Black Bean Sauce',8.20],
-['36','Chicken with Bamboo Shoots & Water Chestnuts',8.00],
-['37','Chicken with Cashew Nuts & Peking Sauce',8.50],
-['38','Chicken with Cashew Nuts',8.00],
-['39','Chicken with Mixed Vegetables (Chop Suey)',8.20],
-['40','Chicken with Hot Szechuan Sauce',8.20],
-['41','Chicken with Satay Sauce',8.20],
-['42','Chicken with Pineapple & Sweet Ginger',8.00],
-['43','Chicken with Broccoli',8.00]]},
-{id:'beef',name:'Beef',items:[
-['44','Deep Fried Shredded Beef with Seaweed (Dry)',8.90],
-['45','Crispy Shredded Beef',8.50,'With hot chilli or plum sauce'],
-['46','Beef with English Mushrooms',8.50],
-['47','Beef with Spring Onion & Ginger',8.50],
-['48','Beef with Green Pepper & Black Bean Sauce',8.50],
-['49','Beef with Oyster Sauce',8.50],
-['50','Beef with Cashew Nut & Peking Sauce',8.50],
-['51','Beef with Cashew Nuts',8.50],
-['52','Beef with Mixed Vegetables (Chop Suey)',8.50],
-['53','Beef with Hot Szechuan Sauce',8.50],
-['54','Beef with Satay Sauce',8.50],
-['55','Beef with Broccoli',8.50],
-['56','Beef with Pineapple & Sweet Ginger',8.50]]},
-{id:'duck',name:'Roast Duck',items:[
-['57','Roast Duck & Roast Pork',9.80],
-['58','Crispy Duck with Sweet Plum Sauce',9.80],
-['59','Roast Duck with Orange Sauce',9.20],
-['60','Roast Duck with Oyster Sauce',9.20],
-['61','Roast Duck with Mixed Vegetables',9.20],
-['62','Roast Duck with Green Pepper & Black Bean Sauce',9.20],
-['63','Roast Duck with Cashew Nut & Peking Sauce',9.50]]},
-{id:'seafood',name:'Seafood',items:[
-['64','Squid with Spring Onion & Ginger',8.50],
-['65','Squid with Green Pepper & Black Bean Sauce',8.50],
-['66','Squid with Salt & Chilli Pepper',8.50],
-['67','Deep Fried King Prawn with Seaweed',9.20],
-['68','King Prawn with Salt & Chilli Pepper',8.90],
-['69','Sweet & Sour King Prawn',8.90],
-['70','Kung Po King Prawn',8.90],
-['71','King Prawn with English Mushrooms',8.90],
-['72','King Prawn with Bamboo Shoots & Water Chestnuts',8.90],
-['73','King Prawn with Spring Onion & Ginger',8.90],
-['74','King Prawn with Green Pepper & Black Bean Sauce',8.90],
-['75','King Prawn with Broccoli',8.90],
-['76','King Prawn with Mixed Vegetables (Chop Suey)',8.90],
-['77','King Prawn with Hot Szechuan Sauce',8.90],
-['78','King Prawn with Pineapple & Sweet Ginger',8.90]]},
-{id:'steak',name:'Sliced Steak',items:[
-['79','Steak Japanese Style',9.80],
-['80','Steak with Spring Onion & Ginger',9.80],
-['81','Steak with Black Pepper Sauce',9.80],
-['82','Steak with Hot Szechuan Sauce',9.80],
-['83','Steak Chinese Style',9.80],
-['84','Steak with Green Pepper & Black Bean Sauce',9.80]]},
-{id:'curry',name:'Curry',items:[
-['85','Thai Red Curry',9.20,'King prawn, chicken or beef'],
-['86','Mixed Meat Curry',9.00],
-['87','King Prawn Curry',8.90],
-['88','Chicken Curry',8.20],
-['89','Beef Curry',8.50],
-['90','Roast Pork Curry',8.50],
-['91','Vegetable Curry',7.50,'','v']]},
-{id:'chowmein',name:'Chow Mein',cnote:'Choice of crispy or soft noodles',items:[
-['92','Special Chow Mein',9.50],
-['93','King Prawn Chow Mein',9.50],
-['94','Chicken Chow Mein',9.20],
-['95','Roast Pork Chow Mein',9.20],
-['96','Beef Chow Mein',9.20],
-['97','Roast Duck Chow Mein',9.80],
-['98','Singapore Style Vermicelli',9.50]]},
-{id:'veg',name:'Vegetarian',items:[
-['99','Mixed Vegetables',7.20,'Choice of black bean, satay, oyster, hot Szechuan or sweet & sour sauce','v'],
-['100','Mixed Vegetable with Cashew Nuts',7.20,'','v'],
-['101','Salt & Chilli Pepper Tofu',7.50,'','v'],
-['102','Vegetarian Vermicelli',8.50,'','v']]},
-{id:'rice',name:'Rice',items:[
-['103','Duck Fried Rice',8.90],
-['104','Southern Asia Special Fried Rice',8.50],
-['105','Singapore Style Fried Rice',8.50],
-['106','Yung Chow Fried Rice',8.50],
-['107','King Prawn Fried Rice',8.90],
-['108','Shrimp Fried Rice',8.50],
-['109','Chicken Fried Rice',8.20],
-['110','Chicken Satay Fried Rice',8.50],
-['111','Beef Fried Rice',8.50],
-['112','Beef Satay Fried Rice',8.80],
-['113','Roast Pork Fried Rice',8.50],
-['114','Vegetable Fried Rice',7.50,'','v'],
-['115','Egg Fried Rice',3.20],
-['116','Boiled Rice',3.10]]},
-{id:'fooyung',name:'Foo Yung',items:[
-['117','Special Foo Yung',8.50],
-['118','King Prawn Foo Yung',8.90],
-['119','Chicken Foo Yung',8.20],
-['120','Beef Foo Yung',8.20],
-['121','Roast Pork Foo Yung',8.20],
-['122','Mushroom Foo Yung',7.50,'','v']]},
-{id:'sides',name:'Side Portions',items:[
-['123','Soft Noodle',4.80],
-['124','Beansprouts',5.00],
-['125','English Mushrooms',5.50],
-['126','Bamboo Shoots & Water Chestnuts',5.50],
-['127','Portion of Chips',3.20],
-['128','Prawn Crackers',2.20,'Sauces listed under this item: barbecue, black bean, black pepper, curry, gravy, hoi sin, plum, satay, sweet & sour or Szechuan'],
-['129','Half Fried Rice & Half Chips',5.50],
-['130','Half Fried Rice & Half Chips with Choice of Sauce',6.50],
-['131','Egg Fried Rice with Choice of Sauce',5.00],
-['132','Salt & Chilli Pepper Chips',5.00],
-['133','Chips & Cheese',5.50],
-['134','Chips & Cheese with Choice of Sauce',5.80],
-['135','Sausages (2) & Chips',5.50],
-['136','Chips, Peas, Gravy',5.50],
-['137','Sausage Dinner',6.50,'2 sausages, chips, peas, onion & gravy']]},
-{id:'chef',name:"Chef's Special",items:[
-['N1','King Prawn with Garlic Butter Sauce',8.90],
-['N2','Chicken, Beef or Pork in Cantonese Sauce',8.00],
-['N3','Chicken or Beef with Tomatoes',8.00],
-['N4','Chicken with Sweetcorn',8.00],
-['N5','Steamed Won Ton (10)',8.50],
-['N6','Stir-Fry Chop Suey Noodle',8.50,'With chicken, beef or pork'],
-['N7','Stir-Fry Chop Suey Noodle with King Prawn',8.90],
-['N9','Cheese Omelette',7.50,'Includes chips'],
-['N10','Chicken Omelette',8.50,'Includes chips'],
-['N11','Thai Green Curry',9.20,'King prawn, chicken or beef'],
-['N12','Crispy Chicken Breast with Choice of Sauce',8.00],
-['N13','Duck Spring Rolls',7.80],
-['N14','Satay Noodles',5.00],
-['N15','Garlic Broccoli',7.20]]}
+var LUNCH=[690,830];
+var PLACES=[
+ {name:'Southern Asia',area:'Strand Road, Port Erin',href:'southern-asia.html',phone:'01624 836516',brand:'#A91D1A',mark:'南亚',
+  facts:'137 numbered dishes plus Chef\'s Specials. Closed Tuesdays.',
+  hours:{Sun:[[1020,1380]],Mon:[[1020,1380]],Tue:[],Wed:[[1020,1380]],Thu:[[1020,1380]],Fri:[[1020,1440]],Sat:[[1020,1440]]}},
+ {name:'Yummy House',area:'Cushag Road, Anagh Coar, Douglas',href:'yummy-house.html',phone:'01624 609609',brand:'#6B2160',mark:'好吃',
+  facts:'220 numbered dishes, set meals and Munchy Boxes. Delivery 5:30pm to 9:30pm, minimum £15.',
+  hours:{Sun:[[990,1320]],Mon:[[990,1320]],Tue:[[990,1320]],Wed:[LUNCH,[990,1320]],Thu:[LUNCH,[990,1320]],Fri:[LUNCH,[990,1350]],Sat:[[990,1350]]}}
 ];
-
-var ITEMS={}, CART={}, vegOnly=false, query='';
-MENU.forEach(function(c){
-  c.list=c.items.map(function(a){
-    var it={n:a[0],name:a[1],note:a[3]||'',v:a[4]==='v',sizes:null,price:null};
-    if(Array.isArray(a[2])){
-      it.sizes=a[2].map(function(s){var k=a[0]+'|'+s[0];ITEMS[k]={key:k,n:a[0],name:a[1],label:s[0],price:s[1]};return {key:k,label:s[0],price:s[1]};});
-    } else {
-      it.price=a[2];it.key=a[0];ITEMS[a[0]]={key:a[0],n:a[0],name:a[1],label:'',price:a[2]};
-    }
-    return it;
-  });
-});
-
-function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-function money(p){return '£'+p.toFixed(2);}
-function $(id){return document.getElementById(id);}
-
-try{var saved=JSON.parse(localStorage.getItem('sa-cart')||'{}');Object.keys(saved).forEach(function(k){if(ITEMS[k]&&saved[k]>0)CART[k]=saved[k];});}catch(e){}
-function persist(){try{localStorage.setItem('sa-cart',JSON.stringify(CART));}catch(e){}}
-
-function ctl(key,name){
-  var q=CART[key]||0;
-  if(!q)return '<button class="add" type="button" data-act="inc" data-key="'+esc(key)+'" aria-label="Add '+esc(name)+' to order">+</button>';
-  return '<span class="step"><button type="button" data-act="dec" data-key="'+esc(key)+'" aria-label="Remove one '+esc(name)+'">−</button><span class="q">'+q+'</span><button class="inc" type="button" data-act="inc" data-key="'+esc(key)+'" aria-label="Add another '+esc(name)+'">+</button></span>';
-}
-
-function renderMenu(){
-  var t=query.trim().toLowerCase(), html='', shown=0, chipsHtml='';
-  MENU.forEach(function(c){
-    var rows=c.list.filter(function(it){
-      if(vegOnly&&!it.v)return false;
-      if(!t)return true;
-      return (it.n.toLowerCase()===t)||it.name.toLowerCase().indexOf(t)>-1||it.note.toLowerCase().indexOf(t)>-1||c.name.toLowerCase().indexOf(t)>-1;
-    });
-    if(!rows.length)return;
-    shown+=rows.length;
-    chipsHtml+='<button class="chip" type="button" data-sec="'+c.id+'">'+esc(c.name)+'</button>';
-    html+='<section class="sec" id="sec-'+c.id+'" data-id="'+c.id+'"><h2>'+esc(c.name)+'</h2>'+(c.cnote?'<p class="cnote">'+esc(c.cnote)+'</p>':'')+'<ul class="rows">';
-    rows.forEach(function(it){
-      html+='<li class="row"><span class="num">'+esc(it.n)+'</span><div><span class="name">'+esc(it.name)+'</span>'+(it.v?'<span class="vtag" title="Vegetarian by name">V</span>':'')+(it.note?'<span class="note">'+esc(it.note)+'</span>':'');
-      if(it.sizes){
-        html+='<div class="sizes">'+it.sizes.map(function(s){return '<div class="size"><span class="sl">'+esc(s.label)+'</span><span class="side"><span class="price">'+money(s.price)+'</span>'+ctl(s.key,it.name+' '+s.label)+'</span></div>';}).join('')+'</div></div><span></span></li>';
-      } else {
-        html+='</div><div class="side"><span class="price">'+money(it.price)+'</span>'+ctl(it.key,it.name)+'</div></li>';
-      }
-    });
-    html+='</ul></section>';
-  });
-  if(!shown){html='<p class="empty">No dishes match "'+esc(query)+'". Try a dish number or a main ingredient like prawn or beef.</p>';}
-  html+='<div class="foot"><p>Typed from a photo of the printed menu in October 2026. The printed menu has no N8, so it is not listed. Prices can change, so check when you order.</p><p>V marks dishes that are vegetarian by name. Ask the shop about stock, sauces and allergies.</p><p>Opening hours are from their Tripadvisor listing.</p></div>';
-  $('menu').innerHTML=html;
-  var chips=$('chips'), prev=chips.getAttribute('data-sig');
-  if(prev!==chipsHtml){chips.innerHTML=chipsHtml;chips.setAttribute('data-sig',chipsHtml);}
-  spy();
-}
-
-function totals(){
-  var n=0,sum=0;
-  Object.keys(CART).forEach(function(k){n+=CART[k];sum+=CART[k]*ITEMS[k].price;});
-  return {n:n,sum:sum};
-}
-function orderText(){
-  var lines=['Southern Asia order'];
-  Object.keys(CART).forEach(function(k){var i=ITEMS[k];lines.push(CART[k]+' x #'+i.n+' '+i.name+(i.label?' ('+i.label+')':'')+' '+money(CART[k]*i.price));});
-  lines.push('Total '+money(totals().sum));
-  return lines.join('\n');
-}
-function renderOrder(){
-  var t=totals();
-  $('obar').hidden=t.n===0;
-  $('obarCount').textContent=t.n+(t.n===1?' item':' items');
-  $('obarTotal').textContent=money(t.sum);
-  if(t.n===0&&!$('sheet').hidden){closeSheet();}
-  var h='',read=[];
-  Object.keys(CART).forEach(function(k){
-    var i=ITEMS[k],q=CART[k];
-    h+='<div class="line"><span class="num">'+esc(i.n)+'</span><span class="ln">'+esc(i.name)+(i.label?' ('+esc(i.label)+')':'')+'</span>'+ctl(k,i.name)+'<span class="lp">'+money(q*i.price)+'</span></div>';
-    read.push('#'+i.n+(i.label?' '+i.label.toLowerCase():'')+(q>1?' ×'+q:''));
-  });
-  $('lines').innerHTML=h;
-  $('sheetTotal').textContent=money(t.sum);
-  $('readout').innerHTML='Read out when you ring:<br><b>'+esc(read.join('  '))+'</b>';
-}
-function change(key,d){
-  var q=(CART[key]||0)+d;
-  if(q<=0)delete CART[key];else CART[key]=Math.min(q,99);
-  persist();renderMenu();renderOrder();
-}
-
-function openSheet(){$('sheet').hidden=false;$('fallback').hidden=true;$('closeSheet').focus();}
-function closeSheet(){$('sheet').hidden=true;}
-
-document.addEventListener('click',function(e){
-  var b=e.target.closest('[data-act],[data-sec]');
-  if(!b)return;
-  if(b.dataset.sec){
-    var el=$('sec-'+b.dataset.sec);if(!el)return;
-    var y=el.getBoundingClientRect().top+window.scrollY-$('bar').offsetHeight-6;
-    window.scrollTo({top:y,behavior:'smooth'});return;
-  }
-  var a=b.dataset.act;
-  if(a==='inc')change(b.dataset.key,1);
-  else if(a==='dec')change(b.dataset.key,-1);
-  else if(a==='close')closeSheet();
-});
-$('openSheet').addEventListener('click',openSheet);
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('sheet').hidden)closeSheet();});
-$('clear').addEventListener('click',function(){CART={};persist();renderMenu();renderOrder();});
-$('copy').addEventListener('click',function(){
-  var txt=orderText(),btn=$('copy');
-  function fallback(){var f=$('fallback');f.value=txt;f.hidden=false;f.focus();f.select();}
-  try{
-    navigator.clipboard.writeText(txt).then(function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy order';},1600);},fallback);
-  }catch(err){fallback();}
-});
-$('q').addEventListener('input',function(e){query=e.target.value;renderMenu();});
-$('veg').addEventListener('click',function(){
-  vegOnly=!vegOnly;this.setAttribute('aria-pressed',vegOnly?'true':'false');renderMenu();
-});
-
-var ticking=false;
-function spy(){
-  var secs=document.querySelectorAll('.sec');if(!secs.length)return;
-  var lim=$('bar').offsetHeight+30,cur=secs[0].dataset.id;
-  secs.forEach(function(s){if(s.getBoundingClientRect().top<=lim)cur=s.dataset.id;});
-  document.querySelectorAll('.chip').forEach(function(c){
-    var on=c.dataset.sec===cur;
-    if(on){c.setAttribute('aria-current','true');var box=$('chips');var target=c.offsetLeft-16;if(Math.abs(box.scrollLeft-target)>box.clientWidth*0.6||c.offsetLeft<box.scrollLeft||c.offsetLeft+c.offsetWidth>box.scrollLeft+box.clientWidth){box.scrollLeft=target;}}
-    else c.removeAttribute('aria-current');
-  });
-}
-window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;spy();});}},{passive:true});
-
-/* opening status, Isle of Man time */
 var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-var HOURS={Sun:[1020,1380],Mon:[1020,1380],Tue:null,Wed:[1020,1380],Thu:[1020,1380],Fri:[1020,1440],Sat:[1020,1440]};
 var FULL={Sun:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday'};
-function clock(m){return m===1440?'midnight':(m/60-12)+'pm';}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function fmt(m){if(m===1440)return 'midnight';var h=Math.floor(m/60),mi=m%60;return (h%12||12)+(mi?':'+('0'+mi).slice(-2):'')+(h>=12?'pm':'am');}
 function ukNow(){
   var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   function g(t){for(var i=0;i<p.length;i++){if(p[i].type===t)return p[i].value;}return '';}
   return {d:g('weekday'),m:(+g('hour'))*60+(+g('minute'))};
 }
-function status(){
-  var el=$('status'),tx=$('statusText');
+function statusFor(pl){
   try{
-    var n=ukNow(),h=HOURS[n.d],idx=DAYS.indexOf(n.d);
+    var n=ukNow(),idx=DAYS.indexOf(n.d);
     if(idx<0)throw new Error('day');
-    if(h&&n.m>=h[0]&&n.m<h[1]){el.className='status open';tx.textContent='Open now until '+clock(h[1]);return;}
-    el.className='status';
-    if(h&&n.m<h[0]){tx.textContent='Closed, opens today at 5pm';return;}
-    for(var i=1;i<=7;i++){
-      var d=DAYS[(idx+i)%7];
-      if(HOURS[d]){tx.textContent='Closed, opens '+(i===1?'tomorrow':FULL[d])+' at 5pm';return;}
+    var today=pl.hours[n.d],i,j;
+    for(j=0;j<today.length;j++){if(n.m>=today[j][0]&&n.m<today[j][1])return {open:true,text:'Open now until '+fmt(today[j][1])};}
+    for(i=0;i<=7;i++){
+      var d=DAYS[(idx+i)%7],rs=pl.hours[d];
+      for(j=0;j<rs.length;j++){
+        if(i>0||rs[j][0]>n.m)return {open:false,text:'Closed, opens '+(i===0?'today':i===1?'tomorrow':FULL[d])+' at '+fmt(rs[j][0])};
+      }
     }
-  }catch(e){tx.textContent='See opening hours';}
+  }catch(e){}
+  return {open:false,text:'See the menu for opening hours'};
 }
-
-renderMenu();renderOrder();status();setInterval(status,60000);
-})();
+function render(){
+  var el=document.getElementById('list');
+  el.innerHTML=PLACES.map(function(p){
+    var s=statusFor(p);
+    return '<article class="card" style="--brand:'+p.brand+'"><div class="top"><span class="mark" aria-hidden="true">'+esc(p.mark)+'</span><h2>'+esc(p.name)+'</h2><p>'+esc(p.area)+'</p></div>'+
+      '<div class="body"><span class="status'+(s.open?' open':'')+'"><span class="dot"></span>'+esc(s.text)+'</span><p class="facts">'+esc(p.facts)+'</p>'+
+      '<div class="actions"><a class="btn" href="'+esc(p.href)+'">View menu</a><a class="btn alt" href="tel:'+esc(p.phone.replace(/\s/g,''))+'">Call shop</a></div></div></article>';
+  }).join('');
+}
+render();setInterval(render,60000);
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+})();
 </script>
-
 </body>
 </html>

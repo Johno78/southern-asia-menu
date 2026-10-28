@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yummy House Menu</title>
+<meta name="theme-color" content="#4A1942">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Takeaways">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Figtree:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+/* Layout: plum masthead with a faint 好吃 (tasty) watermark, sticky search and section strip, then a numbered list read like a phone order. */
+:root{
+  --bg:#F1F6F3; --surface:#FFFFFF; --fg:#1F1A22; --muted:#665E6C; --line:#D6E2DA;
+  --accent:#A3195B; --accent-fg:#FFFFFF; --hero:#4A1942; --hero-fg:#FFF4FA; --hero-soft:rgba(255,244,250,.76);
+  --mint:#CDEBDD; --ok:#1F7A45; --shadow:rgba(31,26,34,.2);
+  --display:'Fredoka','Trebuchet MS',Arial,sans-serif;
+  --sans:'Figtree','Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141116; --surface:#201B24; --fg:#F2EAF3; --muted:#A99FB0; --line:#352E3A;
+    --accent:#F06AAA; --accent-fg:#220A16; --hero:#3A1334; --hero-fg:#FFF1F8; --hero-soft:rgba(255,241,248,.72);
+    --mint:#27493A; --ok:#4CC27F; --shadow:rgba(0,0,0,.55); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141116; --surface:#201B24; --fg:#F2EAF3; --muted:#A99FB0; --line:#352E3A;
+  --accent:#F06AAA; --accent-fg:#220A16; --hero:#3A1334; --hero-fg:#FFF1F8; --hero-soft:rgba(255,241,248,.72);
+  --mint:#27493A; --ok:#4CC27F; --shadow:rgba(0,0,0,.55); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 1rem/1.5 var(--sans);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--hero)}
+.wrap{max-width:46rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.hero{background:var(--hero);color:var(--hero-fg);position:relative;overflow:hidden}
+.hero .wrap{padding-block:1.5rem 1.25rem;position:relative}
+.cn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:.4rem;font:600 4.6rem/1 var(--display);color:var(--hero-fg);opacity:.13;pointer-events:none;user-select:none;letter-spacing:.02em}
+.kicker{margin:0;font:800 .75rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--hero-soft)}
+h1{margin:.35rem 0 .25rem;font:600 clamp(2.6rem,12vw,4rem)/.95 var(--display);text-wrap:balance}
+.addr{margin:0;color:var(--hero-soft);font-size:.95rem}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:1rem}
+.status{display:inline-flex;align-items:center;gap:.5rem;font:600 .85rem/1.2 var(--sans);padding:.5rem .75rem;border-radius:999px;background:rgba(255,255,255,.14)}
+.dot{width:.55rem;height:.55rem;border-radius:50%;background:#A59DAB;flex:none}
+.status.open .dot{background:#5BE08F}
+.phone{font:600 1.2rem/1 var(--mono);color:var(--hero-fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.deliv{margin:.85rem 0 0;font:600 .9rem/1.4 var(--sans);color:var(--hero-fg)}
+.deliv span{display:inline-block;margin-right:.4rem;padding:.15rem .5rem;border-radius:.35rem;background:var(--mint);color:#143325;font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.hours{margin-top:.8rem;font:400 .9rem/1.5 var(--sans);color:var(--hero-soft)}
+.hours summary{cursor:pointer;font-weight:600;color:var(--hero-fg)}
+.hours dl{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1rem;margin:.5rem 0 0}
+.hours dt{font-weight:600}.hours dd{margin:0}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{padding-block:.6rem .5rem;display:grid;gap:.5rem}
+.search{display:flex;gap:.5rem}
+.search input{flex:1;min-width:0;font:400 1rem var(--sans);padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:.6rem;background:var(--surface);color:var(--fg)}
+.search input::placeholder{color:var(--muted)}
+.veg{font:600 .85rem/1 var(--sans);padding:0 .85rem;border:1.5px solid var(--line);border-radius:.6rem;background:var(--surface)}
+.veg[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.chips{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:600 .82rem/1 var(--sans);padding:.55rem .8rem;border-radius:999px;border:1.5px solid var(--line);background:transparent;white-space:nowrap}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+
+main.wrap{padding-block:.5rem 7rem}
+.sec{padding-top:1.4rem}
+.sec h2{margin:0;font:600 1.45rem/1.15 var(--display);color:var(--accent);padding-bottom:.4rem;border-bottom:2px solid var(--accent);text-wrap:balance}
+.sec .cnote{margin:.45rem 0 0;color:var(--muted);font-size:.9rem}
+.rows{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:3rem minmax(0,1fr) auto;gap:.2rem .6rem;padding:.8rem 0;border-bottom:1px solid var(--line);align-items:start}
+.num{font:600 .9rem/1.6 var(--mono);color:var(--accent)}
+.name{font:600 1rem/1.35 var(--sans);overflow-wrap:anywhere}
+.note{display:block;margin-top:.1rem;color:var(--muted);font-size:.86rem;line-height:1.4}
+.vtag{display:inline-block;margin-left:.4rem;font:800 .65rem/1 var(--sans);padding:.2rem .35rem;border-radius:.3rem;background:var(--ok);color:#fff;vertical-align:.12em;letter-spacing:.04em}
+.pre{display:inline-block;margin-left:.4rem;font:800 .65rem/1 var(--sans);padding:.2rem .35rem;border-radius:.3rem;background:var(--hero);color:var(--hero-fg);vertical-align:.12em;letter-spacing:.04em;text-transform:uppercase}
+.side{display:flex;align-items:center;gap:.6rem}
+.price{font:500 .95rem/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.add,.step button{min-width:2.5rem;height:2.5rem;border-radius:50%;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font:600 1.3rem/1 var(--sans);display:inline-flex;align-items:center;justify-content:center;padding:0}
+.step{display:inline-flex;align-items:center;gap:.25rem}
+.step button{width:2.2rem;min-width:2.2rem;height:2.2rem}
+.step .q{min-width:1.4rem;text-align:center;font:600 .95rem var(--mono)}
+.step .inc{background:var(--accent);color:var(--accent-fg)}
+.sizes{display:grid;gap:.4rem;margin-top:.5rem}
+.size{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem 0 .4rem .7rem;border-left:3px solid var(--line)}
+.size .sl{font:600 .9rem var(--sans)}
+.empty{padding:2.5rem 0;text-align:center;color:var(--muted)}
+.foot{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font:400 .85rem/1.55 var(--sans)}
+.foot p{margin:0 0 .6rem}
+
+.obar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--accent);color:var(--accent-fg);padding:.7rem max(16px,env(safe-area-inset-right,0px)) calc(.7rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -6px 20px var(--shadow)}
+.obar button{width:100%;max-width:46rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem;background:none;border:0;color:inherit;font:800 1rem/1.2 var(--sans);padding:.35rem 0}
+.obar .tot{font-family:var(--mono);font-weight:600}
+.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.panel{position:relative;width:100%;max-width:46rem;max-height:88%;overflow-y:auto;background:var(--surface);border-radius:1rem 1rem 0 0;padding:1rem max(16px,env(safe-area-inset-right,0px)) calc(1rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.panel h3{margin:0;font:600 1.4rem var(--display)}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.4rem}
+.ph button{border:1.5px solid var(--line);background:transparent;border-radius:.5rem;padding:.4rem .7rem;font:600 .85rem var(--sans)}
+.line{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;gap:.5rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.line .ln{font:400 .92rem/1.35 var(--sans)}
+.line .lp{font:500 .9rem var(--mono);text-align:right;grid-column:2/4}
+.totalrow{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem 0 .4rem;font:600 1.2rem var(--display)}
+.totalrow span:last-child{font-family:var(--mono);font-weight:600}
+.dnote{margin:0 0 .6rem;font:600 .85rem/1.4 var(--sans);color:var(--muted)}
+.dnote.ok{color:var(--ok)}
+.lab{display:block;margin:.4rem 0 .25rem;font:600 .85rem var(--sans)}
+.notes{width:100%;min-height:4rem;font:400 .95rem/1.4 var(--sans);padding:.6rem;border:1.5px solid var(--line);border-radius:.5rem;background:var(--bg);color:var(--fg);resize:vertical}
+.readout{margin:.8rem 0;padding:.7rem .8rem;border-radius:.6rem;background:var(--bg);font:400 .9rem/1.5 var(--sans)}
+.readout b{font:600 .95rem var(--mono);color:var(--accent)}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.btn{flex:1 1 9rem;padding:.8rem 1rem;border-radius:.6rem;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-fg);font:800 .95rem var(--sans);text-align:center;text-decoration:none}
+.btn.alt{background:transparent;color:var(--accent)}
+.fallback{width:100%;margin-top:.7rem;min-height:7rem;font:400 .85rem/1.4 var(--mono);padding:.6rem;border:1.5px solid var(--line);border-radius:.5rem;background:var(--bg);color:var(--fg)}
+.small{margin:.7rem 0 0;color:var(--muted);font:400 .8rem/1.45 var(--sans)}
+@media (prefers-reduced-motion:no-preference){.chip,.add,.veg{transition:background .15s,color .15s}}
+@media (max-width:380px){.cn{font-size:3.6rem}}
+.back{display:inline-block;margin-bottom:.9rem;font:600 .85rem/1 var(--sans);color:var(--hero-soft);text-decoration:none}.back:hover{color:var(--hero-fg)}
+</style>
+
+
+<header class="hero">
+  <div class="wrap">
+    <a class="back" href="./">‹ All takeaways</a>
+    <span class="cn" aria-hidden="true">好吃</span>
+    <p class="kicker">Chinese takeaway · Anagh Coar, Douglas</p>
+    <h1>Yummy House</h1>
+    <p class="addr">Cushag Road, Anagh Coar, Douglas, IM2 2BZ</p>
+    <div class="meta">
+      <span class="status" id="status"><span class="dot"></span><span id="statusText">Checking hours</span></span>
+      <a class="phone" href="tel:01624609609">01624 609609</a>
+    </div>
+    <p class="deliv"><span>Delivery</span>5:30pm to 9:30pm, minimum order £15</p>
+    <details class="hours">
+      <summary>Opening hours</summary>
+      <dl>
+        <dt>Mon, Tue</dt><dd>4:30pm to 10pm</dd>
+        <dt>Wed, Thu</dt><dd>11:30am to 1:50pm, 4:30pm to 10pm</dd>
+        <dt>Friday</dt><dd>11:30am to 1:50pm, 4:30pm to 10:30pm</dd>
+        <dt>Saturday</dt><dd>4:30pm to 10:30pm</dd>
+        <dt>Sunday</dt><dd>4:30pm to 10pm</dd>
+      </dl>
+    </details>
+  </div>
+</header>
+
+<div class="bar" id="bar">
+  <div class="wrap">
+    <div class="search">
+      <input id="q" type="search" inputmode="search" placeholder="Search a dish or number" aria-label="Search the menu" autocomplete="off">
+      <button class="veg" id="veg" type="button" aria-pressed="false">Veg</button>
+    </div>
+    <nav class="chips" id="chips" aria-label="Menu sections"></nav>
+  </div>
+</div>
+
+<main class="wrap" id="menu" aria-live="polite"></main>
+
+<div class="obar" id="obar" hidden>
+  <button type="button" id="openSheet"><span id="obarCount">0 items</span><span class="tot" id="obarTotal">£0.00</span><span>View order</span></button>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-bg" data-act="close"></div>
+  <section class="panel" role="dialog" aria-modal="true" aria-label="Your order">
+    <div class="ph"><h3>Your order</h3><button type="button" id="closeSheet" data-act="close">Close</button></div>
+    <div id="lines"></div>
+    <div class="totalrow"><span>Total</span><span id="sheetTotal">£0.00</span></div>
+    <p class="dnote" id="dnote"></p>
+    <label class="lab" for="notes">Sauces and changes</label>
+    <textarea class="notes" id="notes" placeholder="e.g. 155 in sweet & sour sauce, no mushrooms on 57"></textarea>
+    <div class="readout" id="readout"></div>
+    <div class="actions">
+      <button class="btn" type="button" id="copy">Copy order</button>
+      <a class="btn alt" href="tel:01624609609">Call 01624 609609</a>
+      <button class="btn alt" type="button" id="clear">Clear order</button>
+    </div>
+    <textarea class="fallback" id="fallback" readonly hidden aria-label="Order text to copy"></textarea>
+    <p class="small">The total is a guide from the printed prices. The shop confirms the final amount when you ring.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+/* item: [number, name, price | [[size, price],...], note, 'v' for vegetarian by name, 'p' for pre-order] */
+var MENU=[
+{id:'sets',name:'Set Meals',cnote:'Price is per person. Menu A and B are for a minimum of two people, Menu C is for four.',items:[
+['','Set Menu A',14.00,'Per person. Chicken sweet corn soup, sweet & sour crispy chicken, chicken curry, English mushroom, egg fried rice, prawn crackers'],
+['','Set Menu B',16.00,'Per person. Mixed starters, chicken with green pepper in black bean sauce, crispy shredded beef in Peking sauce, English mushroom, egg fried rice, prawn crackers. For three people add crispy shredded pork in sweet & sour sauce'],
+['','Set Menu C',18.00,'Per person, for four people. Mixed starters, crispy aromatic duck (half), crispy beef in sweet chilli sauce, king prawn with green pepper in black bean sauce, chicken in satay sauce, special curry (chicken, prawn, ham, char siu, beef), English mushroom, egg fried rice, prawn crackers']]},
+{id:'munchy',name:'Yummy Munchy Boxes',items:[
+['','Yummy Rice Munchy Box',20.00,'Veg spring rolls, veg samosa, salt & chilli pepper chicken wing, salt & chilli chips, chicken balls, egg fried rice, sweet & sour sauce or curry sauce'],
+['','Yummy Noodles Munchy Box',20.00,'Veg spring rolls, veg samosa, salt & chilli pepper chicken wing, salt & chilli chips, chicken balls, noodles, sweet & sour sauce or curry sauce']]},
+{id:'soup',name:'Soup',items:[
+['1','Chicken & Noodle Soup',4.20],
+['2','Chicken & Sweet Corn Soup',4.20],
+['3','Crab Meat & Sweet Corn Soup',4.20],
+['4','Hot & Sour Soup',4.20,'Vegetable or chicken'],
+['5','Wonton Soup',4.20],
+['6','Wonton Soup Sze Chuan Style',4.50]]},
+{id:'app',name:'Appetisers',items:[
+['7','Crispy Aromatic Lamb',11.00,'Served with pancakes, cucumber, spring onions & hoi sin sauce'],
+['8','Crispy Aromatic Duck',[['Quarter',10.50],['Half',19.00],['Whole',36.00]],'Served with pancakes, cucumber, spring onions & hoi sin sauce'],
+['9','Mixed Starters',14.00,'Enough for 2 people: BBQ ribs, spring rolls, crispy wonton, skewered chicken, crispy seaweed, sweet & sour sauce'],
+['10','Spare Ribs in Choice of Sauce',6.50,'Sweet & sour, BBQ, Peking or plum sauce'],
+['11','Homemade Crispy Chicken Spring Rolls',5.20],
+['12','Crispy Mini Vegetable Spring Rolls (10)',4.50,'','v'],
+['13','Sesame Prawn Toast',6.50],
+['14','Crispy Won Ton',5.80],
+['15','Crispy Seaweed with Ground Fish',5.20],
+['16','Crispy Seaweed with Cashew Nuts',5.50],
+['17','Grill Pork Dumplings',6.00],
+['18','Chicken Wings in Choice of Sauce',6.00,'Sweet & sour, BBQ, Peking or plum sauce'],
+['19','Chicken Satay Skewers',6.50],
+['20','Sweet Sour Chicken Batter Ball',7.00]]},
+{id:'salt',name:'Salt & Chilli Pepper',cnote:'Dry and hot',items:[
+['21','Salt & Chilli Pepper Ribs',6.50],
+['22','Salt & Chilli Pepper Crispy Chicken',7.00],
+['23','Salt & Chilli Pepper Crispy Chicken with Seaweed',7.00],
+['24','Salt & Chilli Pepper Crispy Shredded Beef',7.20],
+['25','Salt & Chilli Pepper Crispy Shredded Beef with Seaweed',7.20],
+['26','Salt & Chilli Pepper Chicken Wings',6.00],
+['27','Salt & Chilli Pepper Crispy Shredded Pork',7.20],
+['28','Salt & Chilli Pepper Crispy Shredded Pork with Seaweed',7.20],
+['29','Salt & Chilli Pepper Crispy Tofu',7.50,'Beancurd','v'],
+['30','Salt & Chilli Pepper Crispy Tofu with Seaweed',7.50,'Beancurd','v'],
+['31','Salt & Chilli Pepper King Prawns',7.50],
+['32','Salt & Chilli Pepper Chips',4.50],
+['33','Salt & Chilli Pepper Chips with Cheese',5.50]]},
+{id:'chicken',name:'Chicken',items:[
+['34','Deep Fried Chicken with Garlic Butter Sauce',7.20],
+['35','Deep Fried Chicken with Teriyaki Sauce',7.50],
+['36','Deep Fried Chicken with Pineapple in Lemon Sauce',7.20],
+['37','Deep Fried Chicken in Orange Sauce',7.20],
+['38','Deep Fried Chicken in Plum Sauce',7.20],
+['39','Crispy Chicken in Sweet Chilli Sauce',7.00],
+['40','Crispy Chicken in Honey Chilli Sauce',7.00],
+['41','Crispy Chicken in Sweet & Sour Sauce',7.00],
+['42','Crispy Chicken with Mushroom in Sweet & Sour Sauce',7.00],
+['43','Crispy Chicken with Bamboo Shoots & Water Chestnuts',7.00],
+['44','Crispy Chicken with Mushroom in Black Bean Sauce',7.00],
+['45','Crispy Chicken in Satay Sauce',7.00],
+['46','Crispy Chicken with Green Peppers in Black Bean Sauce',7.00],
+['47','Crispy Chicken with Pineapple & Cashew Nuts',7.00],
+['48','Crispy Chicken with Cashew Nuts in Peking Sauce',7.00],
+['49','Crispy Chicken in Peking Sauce',7.00],
+['50','Crispy Chicken in Cantonese Sauce',7.00],
+['51','Crispy Chicken in Hot Sze Chuan Sauce',7.00],
+['52','Crispy Chicken in Kung Po Sauce',7.00],
+['53','Sliced Chicken in Peking Sauce',6.50],
+['54','Sliced Chicken & Mushrooms',6.50],
+['55','Sliced Chicken with Bamboo Shoots & Water Chestnuts',6.50],
+['56','Sliced Chicken & Cashew Nuts',6.50],
+['57','Sliced Chicken in Satay Sauce',6.50],
+['58','Sliced Chicken with Garlic in Black Pepper Sauce',6.50],
+['59','Sliced Chicken with Green Pepper in Black Bean Sauce',6.50],
+['60','Sliced Chicken with Mushroom in Black Bean Sauce',6.50],
+['61','Sliced Chicken Chop Suey',6.50],
+['62','Sliced Chicken with Pineapple & Cashew Nuts',6.50],
+['63','Sliced Chicken with Cashew Nuts in Peking Sauce',6.50],
+['64','Sliced Chicken with Mushroom in Sweet & Sour Sauce',6.50],
+['65','Sliced Chicken with Ginger & Spring Onions in Oyster Sauce',6.50],
+['66','Sliced Chicken Cantonese Style',6.50]]},
+{id:'beef',name:'Beef',items:[
+['67','Crispy Beef in Sweet Chilli Sauce',7.20],
+['68','Crispy Beef in Honey Chilli Sauce',7.20],
+['69','Crispy Beef Cantonese Style',7.20],
+['70','Crispy Beef in Plum Sauce',7.20],
+['71','Crispy Beef in Peking Sauce',7.20],
+['72','Crispy Beef in Sweet Sour Sauce',7.20],
+['73','Crispy Beef with Bamboo Shoots & Water Chestnuts',7.20],
+['74','Crispy Beef in Kung Po Sauce',7.20],
+['75','Crispy Beef with Mushroom in Sweet & Sour Sauce',7.20],
+['76','Crispy Beef with Green Peppers in Black Bean Sauce',7.20],
+['77','Crispy Beef with Mushroom in Black Bean Sauce',7.20],
+['78','Crispy Beef with Pineapple & Cashew Nuts',7.20],
+['79','Crispy Beef with Cashew Nuts in Peking Sauce',7.20],
+['80','Beef in Peking Sauce',6.50],
+['81','Beef & Mushrooms',6.50],
+['82','Beef with Bamboo Shoots & Water Chestnuts',6.50],
+['83','Beef & Cashew Nuts',6.50],
+['84','Beef in Satay Sauce',6.50],
+['85','Beef with Green Pepper in Black Bean Sauce',6.50],
+['86','Beef with Mushroom in Black Bean Sauce',6.50],
+['87','Beef Chop Suey',6.50],
+['88','Beef in Black Pepper Sauce',6.50],
+['89','Beef with Pineapple & Cashew Nuts',6.50],
+['90','Beef with Cashew Nuts in Peking Sauce',6.50],
+['91','Beef with Mushroom in Sweet & Sour Sauce',6.50],
+['92','Beef with Ginger & Spring Onions in Oyster Sauce',6.50],
+['93','Beef Cantonese Style',6.50],
+['94','Beef in Hot Sze Chuan Sauce',6.50],
+['95','Beef Teriyaki',7.20]]},
+{id:'steak',name:'Sliced Steak',items:[
+['96','Fried Steak Cantonese Style',8.50],
+['97','Fried Steak in Peking Sauce',8.50],
+['98','Fried Steak in Sze Chuan Sauce',8.50],
+['99','Fried Steak in Satay Sauce',8.50],
+['100','Fried Steak in Kung Po Sauce',8.50],
+['101','Fried Steak with Green Pepper in Black Bean Sauce',8.50],
+['102','Fried Steak with Black Pepper Sauce',8.50],
+['103','Fried Steak with Pineapple & Cashew Nuts',8.50],
+['104','Fried Steak with Cashew Nuts in Peking Sauce',8.50],
+['105','Fried Steak with Ginger & Spring Onions',8.50]]},
+{id:'duck',name:'Roast Duck, Roast Pork & Crispy Pork',items:[
+['106','Roast Pork in Kung Po Sauce',7.00],
+['107','Roast Pork in Peking Sauce',7.00],
+['108','Roast Pork with Ginger & Spring Onions in Oyster Sauce',7.00],
+['109','Roast Pork with Green Peppers in Black Bean Sauce',7.00],
+['110','Roast Pork in Hot Sze Chuan Sauce',7.00],
+['111','Roast Pork & Cashew Nuts in Peking Sauce',7.00],
+['112','Roast Pork in Satay Sauce',7.00],
+['113','Roast Pork Black Pepper Sauce',7.00],
+['114','Roast Pork Cantonese Style',7.00],
+['115','Roast Duck & Pork in Choice of Sauce',8.50,'Sweet & sour, BBQ, Peking, plum or sweet soya sauce'],
+['116','Roast Duck in Kung Po Sauce',8.00],
+['117','Roast Duck in Peking Sauce',8.00],
+['118','Roast Duck in Orange Sauce',8.00],
+['119','Roast Duck in Hot Sze Chuan Sauce',8.00],
+['120','Roast Duck in Plum Sauce',8.00],
+['121','Roast Duck with Spring Onions & Ginger',8.00],
+['122','Roast Duck with Green Pepper in Black Bean Sauce',8.00],
+['123','Roast Duck with Bamboo Shoots & Water Chestnuts',8.00],
+['124','Roast Duck in Satay Sauce',8.00],
+['125','Roast Duck with English Mushroom',8.00],
+['126','Roast Duck with Vegetable',8.00],
+['127','Roast Duck in Black Pepper Sauce',8.00],
+['128','Roast Duck with Cashew Nuts in Peking Sauce',8.00],
+['129','Crispy Shredded Pork in Sweet Chilli Sauce',7.20],
+['130','Crispy Shredded Pork in Honey Chilli Sauce',7.20],
+['131','Crispy Shredded Pork Cantonese Style',7.20],
+['132','Crispy Shredded Pork in Plum Sauce',7.20],
+['133','Crispy Shredded Pork in Peking Sauce',7.20],
+['134','Crispy Shredded Pork in Sweet Sour Sauce',7.20],
+['135','Crispy Shredded Pork with Bamboo Shoots & Water Chestnuts',7.20],
+['136','Crispy Shredded Pork in Kung Po Sauce',7.20],
+['137','Crispy Shredded Pork with Mushroom in Sweet & Sour Sauce',7.20],
+['138','Crispy Shredded Pork with Green Peppers in Black Bean Sauce',7.20],
+['139','Crispy Shredded Pork with Mushroom in Black Bean Sauce',7.20],
+['140','Crispy Shredded Pork with Pineapple & Cashew Nuts',7.20],
+['141','Crispy Shredded Pork with Cashew Nuts in Peking Sauce',7.20]]},
+{id:'seafood',name:'Seafood',items:[
+['142','Crispy King Prawn in Sweet Chilli Sauce',7.50],
+['143','Crispy King Prawn in Honey Chilli Sauce',7.50],
+['144','Crispy King Prawn in Sweet Sour Sauce',7.50],
+['145','King Prawn with Spring Onions & Ginger',7.40],
+['146','King Prawn with Green Pepper in Black Bean Sauce',7.40],
+['147','King Prawn in Satay Sauce',7.40],
+['148','King Prawn with Mixed Vegetable',7.40],
+['149','King Prawn with English Mushroom',7.40],
+['150','King Prawn with Bamboo Shoots & Water Chestnuts',7.40],
+['151','King Prawn in Hot Sze Chuan Sauce',7.40],
+['152','King Prawn with Cashew Nuts in Peking Sauce',7.40],
+['153','King Prawn in Black Pepper Sauce',7.40],
+['154','King Prawn with Fresh Chilli Garlic Sauce',7.40],
+['155','Deep Fried Sea Bass in Choice of Sauce',15.00,'Sweet & sour, Szechuan, Peking or plum sauce, or garlic fresh chilli sauce'],
+['156','Minced Prawn Stuffed with Aubergines, Mushrooms, Bell Peppers',12.00,'Pre-order one day in advance only','p'],
+['157','Shui Zhu Sea Bass',18.00,'Sze Chuan boiled fish. Pre-order one day in advance only','p']]},
+{id:'curry',name:'Curry',items:[
+['158','Special Curry',7.00,'Chicken, prawn, ham, char siu, beef'],
+['159','Chicken Curry',6.50,'Or with mushroom'],
+['160','Roast Pork Curry',7.00,'Or with mushroom'],
+['161','Beef Curry',6.50,'Or with mushroom'],
+['162','Roast Duck Curry',8.00,'Or with mushroom'],
+['163','King Prawn Curry',7.40,'Or with mushroom'],
+['164','Prawn Curry',7.00,'Or with mushroom'],
+['165','Special Beef Curry with Fresh Chilli',7.00],
+['166','Special Chicken Curry with Fresh Chilli',7.00],
+['167','Special Roast Duck Curry with Fresh Chilli',7.00],
+['168','Special Roast Pork Curry with Fresh Chilli',7.00],
+['169','Special King Prawn Curry with Fresh Chilli',7.00],
+['170','Mixed Vegetable Curry',6.00,'','v']]},
+{id:'tofu',name:'Tofu & Vegetable',cnote:'Tofu is beancurd',items:[
+['171','Deep Fried Tofu with Fresh Chilli Garlic Sauce',7.50,'','v'],
+['172','Deep Fried Tofu with Sweet Sour Sauce',7.50,'','v'],
+['173','Deep Fried Tofu in Orange Sauce',7.50,'','v'],
+['174','Deep Fried Tofu in Plum Sauce',7.50,'','v'],
+['175','Deep Fried Tofu with Sweet Chilli Sauce',7.50,'','v'],
+['176','Deep Fried Tofu in Honey Chilli Sauce',7.50,'','v'],
+['177','Deep Fried Tofu in Satay Sauce',7.50,'','v'],
+['178','Deep Fried Tofu with Green Pepper Black Bean Sauce',7.50,'','v'],
+['179','Deep Fried Tofu in Peking Sauce',7.50,'','v'],
+['180','Deep Fried Tofu in Cantonese Sauce',7.50,'','v'],
+['181','Deep Fried Tofu with Pineapple & Cashew Nuts',7.50,'','v'],
+['182','Chicken Ma Po Tofu',8.00],
+['183','Beef Ma Po Tofu',8.00],
+['184','King Prawn Ma Po Tofu',8.50],
+['185','Mixed Vegetable in Choice of Sauce',6.00,'Sweet & sour, Szechuan, Peking, plum, oyster or garlic sauce','v']]},
+{id:'chow',name:'Chow Mein',items:[
+['186','Special Chow Mein',8.00,'Chicken, beef, king prawn, ham, char siu'],
+['187','Chicken Chow Mein',7.50],
+['188','Beef Chow Mein',7.50],
+['189','Roast Pork Chow Mein',7.50],
+['190','King Prawn Chow Mein',8.00],
+['191','Roast Duck Chow Mein',8.00],
+['192','Chicken Thai Chow Mein',7.50],
+['193','King Prawn Thai Chow Mein',8.00],
+['194','Singapore Chow Mein',7.50],
+['195','Singapore Style Vermicelli',7.50],
+['196','Chicken & Beef Chow Mein in Choice of Sauce',7.50,'Peking, Szechuan or sweet & sour sauce'],
+['197','Vegetable Chow Mein',6.50,'','v'],
+['198','Szechuan Vegetable Chow Mein',6.50,'','v']]},
+{id:'rice',name:'Fried Rice',items:[
+['199','Special Fried Rice',7.00,'Chicken, prawn, roast pork, ham, beef'],
+['200','Chicken Fried Rice',6.50],
+['201','Beef Fried Rice',6.50],
+['202','Chicken & King Prawn Fried Rice',7.00],
+['203','King Prawn Fried Rice',7.00],
+['204','Prawn Fried Rice',6.50],
+['205','Roast Duck Fried Rice',7.00],
+['206','Roast Pork Fried Rice',6.50],
+['207','Singapore Fried Rice',7.00],
+['208','Chicken & Char Siu Fried Rice',7.00],
+['209','Yung Chow Fried Rice',6.50]]},
+{id:'fooyung',name:'Foo Yung & English',items:[
+['210','Special Foo Yung',7.00],
+['211','Chicken Foo Yung',6.50],
+['212','Roast Pork Foo Yung',7.00],
+['213','King Prawn Foo Yung',7.50],
+['214','Prawn Foo Yung',7.00],
+['215','Mushroom Foo Yung',6.50,'','v'],
+['216','Double Sausage, Chips, Peas, Onions & Gravy',5.50],
+['217','Double Burger, Chips, Peas, Onions & Gravy',5.50],
+['218','Double Sausage, Chips',4.50],
+['219','Double Burger, Chips',4.50],
+['220','Chicken Maryland with Chips, Mushroom, Onions & Gravy',9.50]]},
+{id:'sides',name:'Side Portions',cnote:'These have no dish number on the printed menu',items:[
+['','Boiled Rice',2.80],
+['','Egg Fried Rice',2.90],
+['','Chips',2.90],
+['','Half Rice Half Chips',4.50],
+['','Half Rice Half Chips & Curry or Gravy',5.50],
+['','Chips, Cheese, Gravy',5.50],
+['','Soft Noodle',4.00],
+['','Soft Noodle with Onions & Beansprouts',4.50],
+['','Beansprouts',4.00],
+['','English Mushroom',4.00],
+['','Bamboo Shoots & Water Chestnuts',4.00],
+['','Fried Onions',4.00],
+['','Choice of Sauce',2.50,'Sweet & sour, curry, gravy, satay, plum, black bean, black pepper, Sze Chuan or Peking'],
+['','Prawn Crackers',2.50],
+['','Banana Fritters',4.50],
+['','Pineapple Fritters',4.50]]}
+];
+
+var ITEMS={}, CART={}, vegOnly=false, query='', NOTES='';
+MENU.forEach(function(c){
+  c.list=c.items.map(function(a,idx){
+    var key=a[0]||(c.id+'-'+(idx+1));
+    var it={n:a[0],name:a[1],note:a[3]||'',v:a[4]==='v',pre:a[4]==='p',sizes:null,price:null,key:key};
+    if(Array.isArray(a[2])){
+      it.sizes=a[2].map(function(s){var k=key+'|'+s[0];ITEMS[k]={key:k,n:a[0],name:a[1],label:s[0],price:s[1]};return {key:k,label:s[0],price:s[1]};});
+    } else {
+      it.price=a[2];ITEMS[key]={key:key,n:a[0],name:a[1],label:'',price:a[2]};
+    }
+    return it;
+  });
+});
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function money(p){return '£'+p.toFixed(2);}
+function $(id){return document.getElementById(id);}
+
+try{var saved=JSON.parse(localStorage.getItem('yh-cart')||'{}');Object.keys(saved).forEach(function(k){if(ITEMS[k]&&saved[k]>0)CART[k]=saved[k];});NOTES=localStorage.getItem('yh-notes')||'';}catch(e){}
+function persist(){try{localStorage.setItem('yh-cart',JSON.stringify(CART));localStorage.setItem('yh-notes',NOTES);}catch(e){}}
+
+function ctl(key,name){
+  var q=CART[key]||0;
+  if(!q)return '<button class="add" type="button" data-act="inc" data-key="'+esc(key)+'" aria-label="Add '+esc(name)+' to order">+</button>';
+  return '<span class="step"><button type="button" data-act="dec" data-key="'+esc(key)+'" aria-label="Remove one '+esc(name)+'">−</button><span class="q">'+q+'</span><button class="inc" type="button" data-act="inc" data-key="'+esc(key)+'" aria-label="Add another '+esc(name)+'">+</button></span>';
+}
+
+function renderMenu(){
+  var t=query.trim().toLowerCase(), html='', shown=0, chipsHtml='';
+  MENU.forEach(function(c){
+    var rows=c.list.filter(function(it){
+      if(vegOnly&&!it.v)return false;
+      if(!t)return true;
+      return (it.n&&it.n===t)||it.name.toLowerCase().indexOf(t)>-1||it.note.toLowerCase().indexOf(t)>-1||c.name.toLowerCase().indexOf(t)>-1;
+    });
+    if(!rows.length)return;
+    shown+=rows.length;
+    chipsHtml+='<button class="chip" type="button" data-sec="'+c.id+'">'+esc(c.name.replace('Roast Duck, Roast Pork & Crispy Pork','Duck & Pork').replace('Yummy Munchy Boxes','Munchy Boxes'))+'</button>';
+    html+='<section class="sec" id="sec-'+c.id+'" data-id="'+c.id+'"><h2>'+esc(c.name)+'</h2>'+(c.cnote?'<p class="cnote">'+esc(c.cnote)+'</p>':'')+'<ul class="rows">';
+    rows.forEach(function(it){
+      html+='<li class="row"><span class="num">'+esc(it.n)+'</span><div><span class="name">'+esc(it.name)+'</span>'+(it.v?'<span class="vtag" title="Vegetarian by name">V</span>':'')+(it.pre?'<span class="pre">Pre-order</span>':'')+(it.note?'<span class="note">'+esc(it.note)+'</span>':'');
+      if(it.sizes){
+        html+='<div class="sizes">'+it.sizes.map(function(s){return '<div class="size"><span class="sl">'+esc(s.label)+'</span><span class="side"><span class="price">'+money(s.price)+'</span>'+ctl(s.key,it.name+' '+s.label)+'</span></div>';}).join('')+'</div></div><span></span></li>';
+      } else {
+        html+='</div><div class="side"><span class="price">'+money(it.price)+'</span>'+ctl(it.key,it.name)+'</div></li>';
+      }
+    });
+    html+='</ul></section>';
+  });
+  if(!shown){html='<p class="empty">No dishes match "'+esc(query)+'". Try a dish number or a main ingredient like prawn, beef or tofu.</p>';}
+  html+='<div class="foot"><p>Typed from photos of the printed menu in October 2026. Prices are as printed and can change, so check when you order.</p><p>The printed menu shows allergen symbols beside each dish. They are not copied here, so ask the shop about allergens, sauces and stock.</p><p>V marks dishes that are vegetarian by name only.</p></div>';
+  $('menu').innerHTML=html;
+  var chips=$('chips');
+  if(chips.getAttribute('data-sig')!==chipsHtml){chips.innerHTML=chipsHtml;chips.setAttribute('data-sig',chipsHtml);}
+  spy();
+}
+
+function totals(){
+  var n=0,sum=0;
+  Object.keys(CART).forEach(function(k){n+=CART[k];sum+=CART[k]*ITEMS[k].price;});
+  return {n:n,sum:sum};
+}
+function tag(i){return i.n?'#'+i.n:i.name;}
+function orderText(){
+  var lines=['Yummy House order'];
+  Object.keys(CART).forEach(function(k){var i=ITEMS[k];lines.push(CART[k]+' x '+(i.n?'#'+i.n+' ':'')+i.name+(i.label?' ('+i.label+')':'')+' '+money(CART[k]*i.price));});
+  lines.push('Total '+money(totals().sum));
+  if(NOTES.trim())lines.push('Notes: '+NOTES.trim());
+  return lines.join('\n');
+}
+function renderOrder(){
+  var t=totals();
+  $('obar').hidden=t.n===0;
+  $('obarCount').textContent=t.n+(t.n===1?' item':' items');
+  $('obarTotal').textContent=money(t.sum);
+  if(t.n===0&&!$('sheet').hidden){closeSheet();}
+  var h='',read=[];
+  Object.keys(CART).forEach(function(k){
+    var i=ITEMS[k],q=CART[k];
+    h+='<div class="line"><span class="num">'+esc(i.n)+'</span><span class="ln">'+esc(i.name)+(i.label?' ('+esc(i.label)+')':'')+'</span>'+ctl(k,i.name)+'<span class="lp">'+money(q*i.price)+'</span></div>';
+    read.push(tag(i)+(i.label?' '+i.label.toLowerCase():'')+(q>1?' ×'+q:''));
+  });
+  $('lines').innerHTML=h;
+  $('sheetTotal').textContent=money(t.sum);
+  $('readout').innerHTML='Read out when you ring:<br><b>'+esc(read.join(' · '))+'</b>';
+  var d=$('dnote');
+  if(t.sum>=15){d.className='dnote ok';d.textContent='Meets the £15 delivery minimum.';}
+  else{d.className='dnote';d.textContent=money(15-t.sum)+' more to reach the £15 delivery minimum.';}
+}
+function change(key,delta){
+  var q=(CART[key]||0)+delta;
+  if(q<=0)delete CART[key];else CART[key]=Math.min(q,99);
+  persist();renderMenu();renderOrder();
+}
+
+function openSheet(){$('sheet').hidden=false;$('fallback').hidden=true;$('notes').value=NOTES;$('closeSheet').focus();}
+function closeSheet(){$('sheet').hidden=true;}
+
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act],[data-sec]');
+  if(!b)return;
+  if(b.dataset.sec){
+    var el=$('sec-'+b.dataset.sec);if(!el)return;
+    var y=el.getBoundingClientRect().top+window.scrollY-$('bar').offsetHeight-6;
+    window.scrollTo({top:y,behavior:'smooth'});return;
+  }
+  var a=b.dataset.act;
+  if(a==='inc')change(b.dataset.key,1);
+  else if(a==='dec')change(b.dataset.key,-1);
+  else if(a==='close')closeSheet();
+});
+$('openSheet').addEventListener('click',openSheet);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('sheet').hidden)closeSheet();});
+$('clear').addEventListener('click',function(){CART={};NOTES='';$('notes').value='';persist();renderMenu();renderOrder();});
+$('notes').addEventListener('input',function(e){NOTES=e.target.value;persist();});
+$('copy').addEventListener('click',function(){
+  var txt=orderText(),btn=$('copy');
+  function fallback(){var f=$('fallback');f.value=txt;f.hidden=false;f.focus();f.select();}
+  try{
+    navigator.clipboard.writeText(txt).then(function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy order';},1600);},fallback);
+  }catch(err){fallback();}
+});
+$('q').addEventListener('input',function(e){query=e.target.value;renderMenu();});
+$('veg').addEventListener('click',function(){
+  vegOnly=!vegOnly;this.setAttribute('aria-pressed',vegOnly?'true':'false');renderMenu();
+});
+
+var ticking=false;
+function spy(){
+  var secs=document.querySelectorAll('.sec');if(!secs.length)return;
+  var lim=$('bar').offsetHeight+30,cur=secs[0].dataset.id;
+  secs.forEach(function(s){if(s.getBoundingClientRect().top<=lim)cur=s.dataset.id;});
+  document.querySelectorAll('.chip').forEach(function(c){
+    var on=c.dataset.sec===cur;
+    if(on){c.setAttribute('aria-current','true');var box=$('chips');var target=c.offsetLeft-16;if(c.offsetLeft<box.scrollLeft||c.offsetLeft+c.offsetWidth>box.scrollLeft+box.clientWidth){box.scrollLeft=target;}}
+    else c.removeAttribute('aria-current');
+  });
+}
+window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;spy();});}},{passive:true});
+
+/* opening status, Isle of Man time. Minutes after midnight. */
+var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var FULL={Sun:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday'};
+var LUNCH=[690,830], EVE=[990,1320], EVE_LATE=[990,1350];
+var HOURS={Sun:[EVE],Mon:[EVE],Tue:[EVE],Wed:[LUNCH,EVE],Thu:[LUNCH,EVE],Fri:[LUNCH,EVE_LATE],Sat:[EVE_LATE]};
+function fmt(m){var h=Math.floor(m/60),mi=m%60;return (h%12||12)+(mi?':'+('0'+mi).slice(-2):'')+(h>=12?'pm':'am');}
+function ukNow(){
+  var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  function g(t){for(var i=0;i<p.length;i++){if(p[i].type===t)return p[i].value;}return '';}
+  return {d:g('weekday'),m:(+g('hour'))*60+(+g('minute'))};
+}
+function status(){
+  var el=$('status'),tx=$('statusText');
+  try{
+    var n=ukNow(),idx=DAYS.indexOf(n.d);
+    if(idx<0)throw new Error('day');
+    var today=HOURS[n.d],i,j;
+    for(j=0;j<today.length;j++){
+      if(n.m>=today[j][0]&&n.m<today[j][1]){el.className='status open';tx.textContent='Open now until '+fmt(today[j][1]);return;}
+    }
+    el.className='status';
+    for(i=0;i<=7;i++){
+      var d=DAYS[(idx+i)%7],rs=HOURS[d];
+      for(j=0;j<rs.length;j++){
+        if(i>0||rs[j][0]>n.m){tx.textContent='Closed, opens '+(i===0?'today':i===1?'tomorrow':FULL[d])+' at '+fmt(rs[j][0]);return;}
+      }
+    }
+  }catch(e){tx.textContent='See opening hours';}
+}
+
+renderMenu();renderOrder();status();setInterval(status,60000);
+})();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+
+</body>
+</html>
