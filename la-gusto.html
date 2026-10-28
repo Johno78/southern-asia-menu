@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Gusto Pizza Menu</title>
+<meta name="theme-color" content="#0F1F4A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Takeaways">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Figtree:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<style>
+/* Layout: plum masthead with a faint 好吃 (tasty) watermark, sticky search and section strip, then a numbered list read like a phone order. */
+:root{
+  --bg:#F1F3F9; --surface:#FFFFFF; --fg:#15192A; --muted:#5F657C; --line:#DAE0EE;
+  --accent:#2447A0; --accent-fg:#FFFFFF; --hero:#0F1F4A; --hero-fg:#F3F6FF; --hero-soft:rgba(243,246,255,.76);
+  --mint:#D6E0F6; --ok:#1F7A45; --shadow:rgba(31,26,34,.2);
+  --display:'Playfair Display',Georgia,serif;
+  --sans:'Figtree','Helvetica Neue',Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1018; --surface:#171A28; --fg:#EAEDF8; --muted:#9EA5C0; --line:#2A3048;
+    --accent:#7C9CF0; --accent-fg:#08123A; --hero:#0A1535; --hero-fg:#E9EEFF; --hero-soft:rgba(233,238,255,.72);
+    --mint:#24305A; --ok:#4CC27F; --shadow:rgba(0,0,0,.55); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1018; --surface:#171A28; --fg:#EAEDF8; --muted:#9EA5C0; --line:#2A3048;
+  --accent:#7C9CF0; --accent-fg:#08123A; --hero:#0A1535; --hero-fg:#E9EEFF; --hero-soft:rgba(233,238,255,.72);
+  --mint:#24305A; --ok:#4CC27F; --shadow:rgba(0,0,0,.55); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 1rem/1.5 var(--sans);-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--hero)}
+.wrap{max-width:46rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.hero{background:var(--hero);color:var(--hero-fg);position:relative;overflow:hidden}
+.hero .wrap{padding-block:1.5rem 1.25rem;position:relative}
+.cn{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:.4rem;font:600 4.6rem/1 var(--display);color:var(--hero-fg);opacity:.13;pointer-events:none;user-select:none;letter-spacing:.02em}
+.kicker{margin:0;font:800 .75rem/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--hero-soft)}
+h1{margin:.35rem 0 .25rem;font:600 clamp(2.6rem,12vw,4rem)/.95 var(--display);text-wrap:balance}
+.addr{margin:0;color:var(--hero-soft);font-size:.95rem}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:1rem}
+.status{display:inline-flex;align-items:center;gap:.5rem;font:600 .85rem/1.2 var(--sans);padding:.5rem .75rem;border-radius:999px;background:rgba(255,255,255,.14)}
+.dot{width:.55rem;height:.55rem;border-radius:50%;background:#A59DAB;flex:none}
+.status.open .dot{background:#5BE08F}
+.phone{font:600 1.2rem/1 var(--mono);color:var(--hero-fg);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.deliv{margin:.85rem 0 0;font:600 .9rem/1.4 var(--sans);color:var(--hero-fg)}
+.deliv span{display:inline-block;margin-right:.4rem;padding:.15rem .5rem;border-radius:.35rem;background:var(--mint);color:#0F1F4A;font-weight:800;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.hours{margin-top:.8rem;font:400 .9rem/1.5 var(--sans);color:var(--hero-soft)}
+.hours summary{cursor:pointer;font-weight:600;color:var(--hero-fg)}
+.hours dl{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1rem;margin:.5rem 0 0}
+.hours dt{font-weight:600}.hours dd{margin:0}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{padding-block:.6rem .5rem;display:grid;gap:.5rem}
+.search{display:flex;gap:.5rem}
+.search input{flex:1;min-width:0;font:400 1rem var(--sans);padding:.65rem .8rem;border:1.5px solid var(--line);border-radius:.6rem;background:var(--surface);color:var(--fg)}
+.search input::placeholder{color:var(--muted)}
+.veg{font:600 .85rem/1 var(--sans);padding:0 .85rem;border:1.5px solid var(--line);border-radius:.6rem;background:var(--surface)}
+.veg[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.chips{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.2rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;font:600 .82rem/1 var(--sans);padding:.55rem .8rem;border-radius:999px;border:1.5px solid var(--line);background:transparent;white-space:nowrap}
+.chip[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+
+main.wrap{padding-block:.5rem 7rem}
+.sec{padding-top:1.4rem}
+.sec h2{margin:0;font:600 1.45rem/1.15 var(--display);color:var(--accent);padding-bottom:.4rem;border-bottom:2px solid var(--accent);text-wrap:balance}
+.sec .cnote{margin:.45rem 0 0;color:var(--muted);font-size:.9rem}
+.rows{list-style:none;margin:0;padding:0}
+.row{display:grid;grid-template-columns:3rem minmax(0,1fr) auto;gap:.2rem .6rem;padding:.8rem 0;border-bottom:1px solid var(--line);align-items:start}
+.num{font:600 .9rem/1.6 var(--mono);color:var(--accent)}
+.name{font:600 1rem/1.35 var(--sans);overflow-wrap:anywhere}
+.note{display:block;margin-top:.1rem;color:var(--muted);font-size:.86rem;line-height:1.4}
+.vtag{display:inline-block;margin-left:.4rem;font:800 .65rem/1 var(--sans);padding:.2rem .35rem;border-radius:.3rem;background:var(--ok);color:#fff;vertical-align:.12em;letter-spacing:.04em}
+.heat{display:inline-block;margin-left:.45rem;font:600 .7rem/1 var(--sans);letter-spacing:.08em;color:#C8362B;vertical-align:.1em}
+.pre{display:inline-block;margin-left:.4rem;font:800 .65rem/1 var(--sans);padding:.2rem .35rem;border-radius:.3rem;background:var(--hero);color:var(--hero-fg);vertical-align:.12em;letter-spacing:.04em;text-transform:uppercase}
+.side{display:flex;align-items:center;gap:.6rem}
+.price{font:500 .95rem/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.add,.step button{min-width:2.5rem;height:2.5rem;border-radius:50%;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font:600 1.3rem/1 var(--sans);display:inline-flex;align-items:center;justify-content:center;padding:0}
+.step{display:inline-flex;align-items:center;gap:.25rem}
+.step button{width:2.2rem;min-width:2.2rem;height:2.2rem}
+.step .q{min-width:1.4rem;text-align:center;font:600 .95rem var(--mono)}
+.step .inc{background:var(--accent);color:var(--accent-fg)}
+.sizes{display:grid;gap:.4rem;margin-top:.5rem}
+.size{display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.4rem 0 .4rem .7rem;border-left:3px solid var(--line)}
+.size .sl{font:600 .9rem var(--sans)}
+.empty{padding:2.5rem 0;text-align:center;color:var(--muted)}
+.foot{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);color:var(--muted);font:400 .85rem/1.55 var(--sans)}
+.foot p{margin:0 0 .6rem}
+
+.obar{position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--accent);color:var(--accent-fg);padding:.7rem max(16px,env(safe-area-inset-right,0px)) calc(.7rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -6px 20px var(--shadow)}
+.obar button{width:100%;max-width:46rem;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1rem;background:none;border:0;color:inherit;font:800 1rem/1.2 var(--sans);padding:.35rem 0}
+.obar .tot{font-family:var(--mono);font-weight:600}
+.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.panel{position:relative;width:100%;max-width:46rem;max-height:88%;overflow-y:auto;background:var(--surface);border-radius:1rem 1rem 0 0;padding:1rem max(16px,env(safe-area-inset-right,0px)) calc(1rem + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.panel h3{margin:0;font:600 1.4rem var(--display)}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.4rem}
+.ph button{border:1.5px solid var(--line);background:transparent;border-radius:.5rem;padding:.4rem .7rem;font:600 .85rem var(--sans)}
+.line{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;gap:.5rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.line .ln{font:400 .92rem/1.35 var(--sans)}
+.line .lp{font:500 .9rem var(--mono);text-align:right;grid-column:2/4}
+.totalrow{display:flex;justify-content:space-between;align-items:baseline;padding:.9rem 0 .4rem;font:600 1.2rem var(--display)}
+.totalrow span:last-child{font-family:var(--mono);font-weight:600}
+.dnote{margin:0 0 .6rem;font:600 .85rem/1.4 var(--sans);color:var(--muted)}
+.dnote.ok{color:var(--ok)}
+.lab{display:block;margin:.4rem 0 .25rem;font:600 .85rem var(--sans)}
+.notes{width:100%;min-height:4rem;font:400 .95rem/1.4 var(--sans);padding:.6rem;border:1.5px solid var(--line);border-radius:.5rem;background:var(--bg);color:var(--fg);resize:vertical}
+.readout{margin:.8rem 0;padding:.7rem .8rem;border-radius:.6rem;background:var(--bg);font:400 .9rem/1.5 var(--sans)}
+.readout b{font:600 .95rem var(--mono);color:var(--accent)}
+.actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.btn{flex:1 1 9rem;padding:.8rem 1rem;border-radius:.6rem;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-fg);font:800 .95rem var(--sans);text-align:center;text-decoration:none}
+.btn.alt{background:transparent;color:var(--accent)}
+.fallback{width:100%;margin-top:.7rem;min-height:7rem;font:400 .85rem/1.4 var(--mono);padding:.6rem;border:1.5px solid var(--line);border-radius:.5rem;background:var(--bg);color:var(--fg)}
+.small{margin:.7rem 0 0;color:var(--muted);font:400 .8rem/1.45 var(--sans)}
+@media (prefers-reduced-motion:no-preference){.chip,.add,.veg{transition:background .15s,color .15s}}
+@media (max-width:380px){.cn{font-size:3.6rem}}
+.orderlink{display:inline-block;margin-top:.85rem;padding:.7rem 1.1rem;border-radius:.6rem;background:var(--hero-fg);color:var(--hero);font:800 .95rem var(--sans);text-decoration:none}
+.row{grid-template-columns:minmax(0,1fr) auto}
+.num{display:none}
+.line{grid-template-columns:minmax(0,1fr) auto}
+.line .lp{grid-column:1/3}
+.back{display:inline-block;margin-bottom:.9rem;font:600 .85rem/1 var(--sans);color:var(--hero-soft);text-decoration:none}.back:hover{color:var(--hero-fg)}
+</style>
+
+
+<header class="hero">
+  <div class="wrap">
+    <a class="back" href="./">‹ All takeaways</a>
+    <span class="cn" aria-hidden="true">🍕</span>
+    <p class="kicker">Pizza, burgers and wraps · Port Erin</p>
+    <h1>La Gusto Pizza</h1>
+    <p class="addr">Shore Road, Port Erin, IM9 6HL</p>
+    <div class="meta">
+      <span class="status" id="status"><span class="dot"></span><span id="statusText">Checking hours</span></span>
+      <a class="phone" href="tel:01624834834">01624 834 834</a>
+    </div>
+    <p class="deliv"><span>Online</span>Order online for delivery or collection. Delivery £1.00 locally, minimum order applies. Cards accepted.</p>
+    <a class="orderlink" href="https://www.lagustopizza.co.uk" target="_blank" rel="noopener">Order online</a>
+    <details class="hours">
+      <summary>Opening hours</summary>
+      <dl>
+        <dt>Sun to Thu</dt><dd>5pm to 10pm</dd>
+        <dt>Fri and Sat</dt><dd>5pm to 11pm</dd>
+        <dt>Monday</dt><dd>Closed</dd>
+      </dl>
+    </details>
+  </div>
+</header>
+
+<div class="bar" id="bar">
+  <div class="wrap">
+    <div class="search">
+      <input id="q" type="search" inputmode="search" placeholder="Search a dish or ingredient" aria-label="Search the menu" autocomplete="off">
+      <button class="veg" id="veg" type="button" aria-pressed="false">Veg</button>
+    </div>
+    <nav class="chips" id="chips" aria-label="Menu sections"></nav>
+  </div>
+</div>
+
+<main class="wrap" id="menu" aria-live="polite"></main>
+
+<div class="obar" id="obar" hidden>
+  <button type="button" id="openSheet"><span id="obarCount">0 items</span><span class="tot" id="obarTotal">£0.00</span><span>View order</span></button>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-bg" data-act="close"></div>
+  <section class="panel" role="dialog" aria-modal="true" aria-label="Your order">
+    <div class="ph"><h3>Your order</h3><button type="button" id="closeSheet" data-act="close">Close</button></div>
+    <div id="lines"></div>
+    <div class="totalrow"><span>Total</span><span id="sheetTotal">£0.00</span></div>
+    <p class="dnote" id="dnote"></p>
+    <label class="lab" for="notes">Sauces and changes</label>
+    <textarea class="notes" id="notes" placeholder="e.g. Margherita, extra cheese, 14 inch"></textarea>
+    <div class="readout" id="readout"></div>
+    <div class="actions">
+      <button class="btn" type="button" id="copy">Copy order</button>
+      <a class="btn alt" href="tel:01624834834">Call 01624 834 834</a>
+      <button class="btn alt" type="button" id="clear">Clear order</button>
+    </div>
+    <textarea class="fallback" id="fallback" readonly hidden aria-label="Order text to copy"></textarea>
+    <p class="small">The total uses the shop's "from" prices (10 inch, 4oz, medium), so it can be higher. Use Order online to place the order. The shop confirms the final amount when you ring.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+/* item: [number, name, price | [[size, price],...], note, 'v' for vegetarian by name, 'p' for pre-order] */
+var MENU=[
+{id:'pz',short:'Pizzas',name:'Pizzas and Calzones',cnote:'Prices are the 10 inch ("from" price on the shop\'s site). 14 inch costs more, so check the price on the shop\'s ordering page.',items:[
+['','Margherita',8.90,'Mozzarella','v'],
+['','Hawaiian',11.50,'Roast ham, pineapple'],
+['','Farmhouse',11.50,'Mushrooms, roast ham'],
+['','Rosso',11.50,'Chicken, roast ham'],
+['','Danish',11.90,'Pepperoni, Milano salami, roast ham'],
+['','Pepperoni Deluxe',11.90,'2x pepperoni, mozzarella'],
+['','Polo',11.90,'Chicken, mushrooms, sweetcorn'],
+['','Luka Brasi',11.90,'Italian hot sausage, mushrooms, fresh chillies, garlic butter'],
+['','Hot & Spicy',12.50,'Chicken, homemade meatballs, red onions, jalapeno, Cajun spices'],
+['','Mexicana',12.50,'Pepperoni, Milano salami, mixed peppers, red onions, jalapeno, Cajun spices'],
+['','Regina',12.50,'Pepperoni, homemade meatballs, mushrooms, mixed peppers, red onions'],
+['','Bianca',12.50,'Baby spinach, cherry tomato, anchovies, green olives, fresh chillies, oregano'],
+['','Vegetarian',12.50,'Mushrooms, mixed peppers, red onions, sweetcorn','v'],
+['','BBQ Supreme',12.50,'BBQ base. Pepperoni, chicken, red onions, mushrooms'],
+['','Greek',12.50,'Baby spinach, homemade meatballs, feta, black olives, cherry tomato, oregano'],
+['','Al Tonno',12.50,'Tuna, fresh garlic, cherry tomato, red onions, fresh basil, EVOO'],
+['','Gringo',12.50,'Spanish chorizo, pepperoni, mushrooms, mixed peppers, red onions'],
+['','Meat Feast',13.50,'Pepperoni, chicken, Italian hot sausage, roast ham, Milano salami'],
+['','Hellboy',13.50,'Spanish chorizo, smoked cheese, sun-dried tomatoes, fresh chillies, fresh garlic'],
+['','Spicy Meatball',13.50,'Homemade meatballs, sun-dried tomatoes, jalapeno, mushrooms, Gorgonzola'],
+['','Tony Montana',13.50,'2x pepperoni, fresh chillies, spicy honey'],
+['','Americana',13.50,'Cream base. Mozzarella, frankfurter, chips'],
+['','Hot BBQ Pizza',13.50,'BBQ base. Italian hot sausage, chicken, homemade meatballs, red onions, jalapeno'],
+['','Gusto Mix',13.90,'Choose 7 toppings'],
+['','Bantella Calzone',9.20,'Banana and Nutella, one size']]},
+{id:'sp',short:'Special Pizzas',name:'Special Pizzas',cnote:'Prices are the 10 inch ("from" price). Check the shop\'s ordering page for 14 inch.',items:[
+['','Napoletana',13.50,'Provolone, buffalo cheese, parmesan, fresh basil, EVOO'],
+['','Capricciosa',14.90,'Buffalo cheese, provolone, mushrooms, artichokes, roast ham, black olives'],
+['','La Veggi',14.90,'Provolone, buffalo cheese, baby spinach, mushrooms, artichokes, sun-dried tomatoes, fresh garlic','v'],
+['','Quattro Formaggi',14.90,'Buffalo cheese, provolone, cheddar, Gorgonzola'],
+['','Marinara',14.90,'Buffalo cheese, Parma ham, provolone, fresh rocket, parmesan, EVOO'],
+['','Filletti',14.90,'Buffalo cheese, provolone, cherry tomato, black olives, fresh garlic, parmesan, fresh basil, EVOO'],
+['','Bella',14.90,'Provolone, Spanish chorizo, fresh garlic, mushrooms, black olives, secret spices'],
+['','Ricotta Diavola',14.90,'Pepperoni, nduja, ricotta, parmesan, fresh chillies'],
+['','Pistachini',14.90,'Pistachio pesto base. Mortadella ham, ricotta, parmesan, pistachio'],
+['','La Gusto Pizza',14.90,'Buffalo cheese, provolone, Italian hot sausage, mixed peppers, mushrooms, fresh garlic, red onions, parmesan, fresh basil'],
+['','Pizzanista',14.90,'Provolone, buffalo cheese, fresh garlic, fresh chillies, anchovies, EVOO, tuna'],
+['','Romana',14.90,'Buffalo cheese, provolone, fresh garlic, fresh basil, EVOO']]},
+{id:'gb',short:'Garlic Bread',name:'Garlic Bread',cnote:'Prices are the 10 inch. 14 inch costs more.',items:[
+['','Garlic Bread, Tomato Sauce',7.50],
+['','Garlic Bread, Mozzarella',8.90],
+['','Garlic Bread, Mozzarella & Mushroom',9.90],
+['','Garlic Bread, Tomato Sauce & Parmesan',8.90],
+['','Garlic Bread, Tomato Sauce & Feta',9.50]]},
+{id:'bg',short:'Burgers',name:'Home Made Burgers',cnote:'Prices are the 4oz. The 8oz costs more.',items:[
+['','Chicken Burger',9.90,'Fresh chicken breast in a bun, with free house cut chips'],
+['','Home Made Manx Burger',9.90,'Bun, house cut chips, fresh sauce and salad of your choice'],
+['','Hawaiian Burger',10.90,'4oz beef, pineapple, cheese, red onion, lettuce and burger sauce in a bun']]},
+{id:'wr',short:'Wraps',name:'Wraps',items:[
+['','Chicken Wrap',10.50,'Chicken fillet, lettuce, mixed peppers, red onions, chips, cheddar, garlic sauce'],
+['','Spicy Chicken Wrap',10.50,'Chicken fillet, jalapeno, red onions, chips, lettuce, cheddar, chipotle sauce'],
+['','Burger Wrap',10.50,'Beef burger, American cheese, lettuce, gherkins, onions, burger sauce'],
+['','Steak Wrap',11.50,'Grilled sliced steak, tomatoes, garlic sauce, onions, cheese, lettuce'],
+['','Mixed Wrap',12.50,'Grilled steak, chicken fillet, lettuce, mixed peppers, red onions, chips, cheddar, garlic sauce'],
+['','Halloumi & Mozzarella Wrap',9.50,'Halloumi fries, mozzarella sticks, lettuce, mixed peppers, red onions, chips, cheddar, garlic sauce','v'],
+['','Veggie Wrap',8.90,'Lettuce, red onions, mushrooms, mixed peppers, cherry tomatoes, cheese, garlic sauce','v']]},
+{id:'sal',short:'Salad & Sides',name:'Salad and Sides',items:[
+['','Chicken Caesar Salad',9.90,'Chicken fillet, romaine lettuce, anchovies, croutons, Caesar dressing, parmesan'],
+['','Greek Salad',8.00,'Romaine, tomatoes, cucumber, onion, feta, olives, oregano, olive oil'],
+['','Mozzarella Sticks',8.90,'8 breaded sticks'],
+['','Halloumi Fries',7.90,'8 breaded fries']]},
+{id:'ext',short:'Extras',name:'Extras',cnote:'Chips are the medium "from" price. Large costs more.',items:[
+['','Garlic Sauce Tub',1.50],['','Chilli Sauce Tub',1.50],['','BBQ Sauce Tub',1.00],['','Ketchup Tub',1.00],['','Mayo Tub',1.00],['','Spicy Honey Sauce Tub',2.00],['','Homemade Chipotle Sauce',1.50],
+['','House Cut Chips',3.90],['','House Cut Chips & Cheese',5.40]]},
+{id:'des',short:'Dessert',name:'Dessert',items:[['','Banatella',9.20,'10 inch']]},
+{id:'drk',short:'Drinks',name:'Drinks',items:[
+['','Coke (330ml)',1.80],['','Diet Coke (330ml)',1.80],['','Fanta (330ml)',1.80],['','Sprite (330ml)',1.80],['','Dr Pepper (330ml)',1.80],['','Still Water (500ml)',1.80],
+['','San Pellegrino Blood Orange (330ml)',2.00],['','San Pellegrino Lemon (330ml)',2.00],['','San Pellegrino Orange & Pomegranate (330ml)',2.00]]}
+];
+
+var ITEMS={}, CART={}, vegOnly=false, query='', NOTES='';
+MENU.forEach(function(c){
+  c.list=c.items.map(function(a,idx){
+    var key=a[0]||(c.id+'-'+(idx+1));
+    var it={n:a[0],name:a[1],note:a[3]||'',v:(a[4]||'').indexOf('v')>-1,pre:(a[4]||'').indexOf('p')>-1,heat:+((a[4]||'').match(/[123]/)||[c.heat||0])[0],sizes:null,price:null,key:key};
+    if(Array.isArray(a[2])){
+      it.sizes=a[2].map(function(s){var k=key+'|'+s[0];ITEMS[k]={key:k,n:a[0],name:a[1],label:s[0],price:s[1]};return {key:k,label:s[0],price:s[1]};});
+    } else {
+      it.price=a[2];ITEMS[key]={key:key,n:a[0],name:a[1],label:'',price:a[2]};
+    }
+    return it;
+  });
+});
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function money(p){return '£'+p.toFixed(2);}
+function $(id){return document.getElementById(id);}
+
+try{var saved=JSON.parse(localStorage.getItem('lg-cart')||'{}');Object.keys(saved).forEach(function(k){if(ITEMS[k]&&saved[k]>0)CART[k]=saved[k];});NOTES=localStorage.getItem('lg-notes')||'';}catch(e){}
+function persist(){try{localStorage.setItem('lg-cart',JSON.stringify(CART));localStorage.setItem('lg-notes',NOTES);}catch(e){}}
+
+function ctl(key,name){
+  var q=CART[key]||0;
+  if(!q)return '<button class="add" type="button" data-act="inc" data-key="'+esc(key)+'" aria-label="Add '+esc(name)+' to order">+</button>';
+  return '<span class="step"><button type="button" data-act="dec" data-key="'+esc(key)+'" aria-label="Remove one '+esc(name)+'">−</button><span class="q">'+q+'</span><button class="inc" type="button" data-act="inc" data-key="'+esc(key)+'" aria-label="Add another '+esc(name)+'">+</button></span>';
+}
+
+function renderMenu(){
+  var t=query.trim().toLowerCase(), html='', shown=0, chipsHtml='';
+  MENU.forEach(function(c){
+    var rows=c.list.filter(function(it){
+      if(vegOnly&&!it.v)return false;
+      if(!t)return true;
+      return (it.n&&it.n===t)||it.name.toLowerCase().indexOf(t)>-1||it.note.toLowerCase().indexOf(t)>-1||c.name.toLowerCase().indexOf(t)>-1;
+    });
+    if(!rows.length)return;
+    shown+=rows.length;
+    chipsHtml+='<button class="chip" type="button" data-sec="'+c.id+'">'+esc(c.short||c.name)+'</button>';
+    html+='<section class="sec" id="sec-'+c.id+'" data-id="'+c.id+'"><h2>'+esc(c.name)+'</h2>'+(c.cnote?'<p class="cnote">'+esc(c.cnote)+'</p>':'')+'<ul class="rows">';
+    rows.forEach(function(it){
+      html+='<li class="row"><span class="num">'+esc(it.n)+'</span><div><span class="name">'+esc(it.name)+'</span>'+(it.heat?'<span class="heat" title="'+HL[it.heat]+'" aria-label="'+HL[it.heat]+'">'+'●'.repeat(it.heat)+'</span>':'')+(it.v?'<span class="vtag" title="Vegetarian by name">V</span>':'')+(it.pre?'<span class="pre">Pre-order</span>':'')+(it.note?'<span class="note">'+esc(it.note)+'</span>':'');
+      if(it.sizes){
+        html+='<div class="sizes">'+it.sizes.map(function(s){return '<div class="size"><span class="sl">'+esc(s.label)+'</span><span class="side"><span class="price">'+money(s.price)+'</span>'+ctl(s.key,it.name+' '+s.label)+'</span></div>';}).join('')+'</div></div><span></span></li>';
+      } else {
+        html+='</div><div class="side"><span class="price">'+money(it.price)+'</span>'+ctl(it.key,it.name)+'</div></li>';
+      }
+    });
+    html+='</ul></section>';
+  });
+  if(!shown){html='<p class="empty">No dishes match "'+esc(query)+'". Try a main ingredient like chicken, cheese or tuna.</p>';}
+  html+='<div class="foot"><p>Taken from the shop\'s website in October 2026. Prices can change, so check when you order.</p><p>The shop lists a "from" price for each dish. That is the 10 inch pizza, 4oz burger and medium chips. Larger sizes cost more and are priced on the shop\'s ordering page, so this total is a minimum.</p><p>The shop asks you to tell them about any allergies or dietary needs before ordering. V marks dishes that are vegetarian by name only.</p><p>Order and pay through the Order online button.</p></div>';
+  $('menu').innerHTML=html;
+  var chips=$('chips');
+  if(chips.getAttribute('data-sig')!==chipsHtml){chips.innerHTML=chipsHtml;chips.setAttribute('data-sig',chipsHtml);}
+  spy();
+}
+
+function totals(){
+  var n=0,sum=0;
+  Object.keys(CART).forEach(function(k){n+=CART[k];sum+=CART[k]*ITEMS[k].price;});
+  return {n:n,sum:sum};
+}
+function tag(i){return i.n?'#'+i.n:i.name;}
+function orderText(){
+  var lines=['La Gusto Pizza order'];
+  Object.keys(CART).forEach(function(k){var i=ITEMS[k];lines.push(CART[k]+' x '+(i.n?'#'+i.n+' ':'')+i.name+(i.label?' ('+i.label+')':'')+' '+money(CART[k]*i.price));});
+  lines.push('Total '+money(totals().sum));
+  if(NOTES.trim())lines.push('Notes: '+NOTES.trim());
+  return lines.join('\n');
+}
+function renderOrder(){
+  var t=totals();
+  $('obar').hidden=t.n===0;
+  $('obarCount').textContent=t.n+(t.n===1?' item':' items');
+  $('obarTotal').textContent=money(t.sum);
+  if(t.n===0&&!$('sheet').hidden){closeSheet();}
+  var h='',read=[];
+  Object.keys(CART).forEach(function(k){
+    var i=ITEMS[k],q=CART[k];
+    h+='<div class="line"><span class="num">'+esc(i.n)+'</span><span class="ln">'+esc(i.name)+(i.label?' ('+esc(i.label)+')':'')+'</span>'+ctl(k,i.name)+'<span class="lp">'+money(q*i.price)+'</span></div>';
+    read.push(tag(i)+(i.label?' '+i.label.toLowerCase():'')+(q>1?' ×'+q:''));
+  });
+  $('lines').innerHTML=h;
+  $('sheetTotal').textContent=money(t.sum);
+  $('readout').innerHTML='Read out when you ring:<br><b>'+esc(read.join(' · '))+'</b>';
+  var d=$('dnote');d.className='dnote';d.textContent='Tap Order online to place the order on the shop website. Local delivery is £1.00 and a minimum order applies.';
+}
+function change(key,delta){
+  var q=(CART[key]||0)+delta;
+  if(q<=0)delete CART[key];else CART[key]=Math.min(q,99);
+  persist();renderMenu();renderOrder();
+}
+
+function openSheet(){$('sheet').hidden=false;$('fallback').hidden=true;$('notes').value=NOTES;$('closeSheet').focus();}
+function closeSheet(){$('sheet').hidden=true;}
+
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-act],[data-sec]');
+  if(!b)return;
+  if(b.dataset.sec){
+    var el=$('sec-'+b.dataset.sec);if(!el)return;
+    var y=el.getBoundingClientRect().top+window.scrollY-$('bar').offsetHeight-6;
+    window.scrollTo({top:y,behavior:'smooth'});return;
+  }
+  var a=b.dataset.act;
+  if(a==='inc')change(b.dataset.key,1);
+  else if(a==='dec')change(b.dataset.key,-1);
+  else if(a==='close')closeSheet();
+});
+$('openSheet').addEventListener('click',openSheet);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('sheet').hidden)closeSheet();});
+$('clear').addEventListener('click',function(){CART={};NOTES='';$('notes').value='';persist();renderMenu();renderOrder();});
+$('notes').addEventListener('input',function(e){NOTES=e.target.value;persist();});
+$('copy').addEventListener('click',function(){
+  var txt=orderText(),btn=$('copy');
+  function fallback(){var f=$('fallback');f.value=txt;f.hidden=false;f.focus();f.select();}
+  try{
+    navigator.clipboard.writeText(txt).then(function(){btn.textContent='Copied';setTimeout(function(){btn.textContent='Copy order';},1600);},fallback);
+  }catch(err){fallback();}
+});
+$('q').addEventListener('input',function(e){query=e.target.value;renderMenu();});
+$('veg').addEventListener('click',function(){
+  vegOnly=!vegOnly;this.setAttribute('aria-pressed',vegOnly?'true':'false');renderMenu();
+});
+
+var ticking=false;
+function spy(){
+  var secs=document.querySelectorAll('.sec');if(!secs.length)return;
+  var lim=$('bar').offsetHeight+30,cur=secs[0].dataset.id;
+  secs.forEach(function(s){if(s.getBoundingClientRect().top<=lim)cur=s.dataset.id;});
+  document.querySelectorAll('.chip').forEach(function(c){
+    var on=c.dataset.sec===cur;
+    if(on){c.setAttribute('aria-current','true');var box=$('chips');var target=c.offsetLeft-16;if(c.offsetLeft<box.scrollLeft||c.offsetLeft+c.offsetWidth>box.scrollLeft+box.clientWidth){box.scrollLeft=target;}}
+    else c.removeAttribute('aria-current');
+  });
+}
+window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;spy();});}},{passive:true});
+
+/* opening status, Isle of Man time. Minutes after midnight. */
+var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var FULL={Sun:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday'};
+var HOURS={Sun:[[1020,1320]],Mon:[],Tue:[[1020,1320]],Wed:[[1020,1320]],Thu:[[1020,1320]],Fri:[[1020,1380]],Sat:[[1020,1380]]};
+function fmt(m){var h=Math.floor(m/60),mi=m%60;return (h%12||12)+(mi?':'+('0'+mi).slice(-2):'')+(h>=12?'pm':'am');}
+function ukNow(){
+  var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
+  function g(t){for(var i=0;i<p.length;i++){if(p[i].type===t)return p[i].value;}return '';}
+  return {d:g('weekday'),m:(+g('hour'))*60+(+g('minute'))};
+}
+function status(){
+  var el=$('status'),tx=$('statusText');
+  try{
+    var n=ukNow(),idx=DAYS.indexOf(n.d);
+    if(idx<0)throw new Error('day');
+    var today=HOURS[n.d],i,j;
+    for(j=0;j<today.length;j++){
+      if(n.m>=today[j][0]&&n.m<today[j][1]){el.className='status open';tx.textContent='Open now until '+fmt(today[j][1]);return;}
+    }
+    el.className='status';
+    for(i=0;i<=7;i++){
+      var d=DAYS[(idx+i)%7],rs=HOURS[d];
+      for(j=0;j<rs.length;j++){
+        if(i>0||rs[j][0]>n.m){tx.textContent='Closed, opens '+(i===0?'today':i===1?'tomorrow':FULL[d])+' at '+fmt(rs[j][0]);return;}
+      }
+    }
+  }catch(e){tx.textContent='See opening hours';}
+}
+
+renderMenu();renderOrder();status();setInterval(status,60000);
+})();
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+
+</body>
+</html>

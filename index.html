@@ -95,7 +95,13 @@ var PLACES=[
   hours:{Sun:[[1020,1320]],Mon:[[1020,1320]],Tue:[[1020,1320]],Wed:[],Thu:[[1020,1320]],Fri:[[1020,1320]],Sat:[[1020,1320]]}},
  {name:'Mandarin Takeaway',area:'Church Road, Port Erin',href:'mandarin.html',phone:'01624 835555',brand:'#B4430F',mark:'外卖',
   facts:'148 numbered dishes plus vegetarian and English dishes, and two banquets. Cash only.',
-  hours:{Sun:[[1020,1380]],Mon:[[1020,1380]],Tue:[[1020,1380]],Wed:[[1020,1380]],Thu:[[1020,1380]],Fri:[[1020,1440]],Sat:[[1020,1440]]}}
+  hours:{Sun:[[1020,1380]],Mon:[[1020,1380]],Tue:[[1020,1380]],Wed:[[1020,1380]],Thu:[[1020,1380]],Fri:[[1020,1440]],Sat:[[1020,1440]]}},
+ {name:'Simple',area:'Bridson Street, Port Erin',href:'simple.html',phone:'07624 330330',order:'https://simple.touchtakeaway.net/menu',brand:'#2A7A3B',mark:'🍕',
+  facts:'Pizza, kebabs, burgers and meal deals, 109 items. Closed Mondays and Tuesdays.',
+  hours:{Sun:[[1020,1290]],Mon:[],Tue:[],Wed:[[1020,1290]],Thu:[[1020,1290]],Fri:[[1020,1350]],Sat:[[1020,1350]]}},
+ {name:'La Gusto Pizza',area:'Shore Road, Port Erin',href:'la-gusto.html',phone:'01624 834834',order:'https://www.lagustopizza.co.uk',brand:'#2447A0',mark:'🍕',
+  facts:'Stonebaked pizza, burgers and wraps. Delivery £1.00 locally. Closed Mondays.',
+  hours:{Sun:[[1020,1320]],Mon:[],Tue:[[1020,1320]],Wed:[[1020,1320]],Thu:[[1020,1320]],Fri:[[1020,1380]],Sat:[[1020,1380]]}}
 ];
 var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 var FULL={Sun:'Sunday',Mon:'Monday',Tue:'Tuesday',Wed:'Wednesday',Thu:'Thursday',Fri:'Friday',Sat:'Saturday'};
@@ -127,7 +133,7 @@ function render(){
     var s=statusFor(p);
     return '<article class="card" style="--brand:'+p.brand+'"><div class="top"><span class="mark" aria-hidden="true">'+esc(p.mark)+'</span><h2>'+esc(p.name)+'</h2><p>'+esc(p.area)+'</p></div>'+
       '<div class="body"><span class="status'+(s.open?' open':'')+'"><span class="dot"></span>'+esc(s.text)+'</span><p class="facts">'+esc(p.facts)+'</p>'+
-      '<div class="actions"><a class="btn" href="'+esc(p.href)+'">View menu</a><a class="btn alt" href="tel:'+esc(p.phone.replace(/\s/g,''))+'">Call shop</a></div></div></article>';
+      '<div class="actions"><a class="btn" href="'+esc(p.href)+'">View menu</a><a class="btn alt" href="tel:'+esc(p.phone.replace(/\s/g,''))+'">Call shop</a>'+(p.order?'<a class="btn alt" href="'+esc(p.order)+'" target="_blank" rel="noopener">Order online</a>':'')+'</div></div></article>';
   }).join('');
 }
 render();setInterval(render,60000);
